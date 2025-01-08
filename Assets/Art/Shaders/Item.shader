@@ -2,28 +2,30 @@ Shader "GJG/Sprite/Item"
 {
     Properties
     {
-        _MainTex ("Base Texture", 2D) = "white" {}  // Ana dokumuz
-        [PerRendererData] _GrayscaleIntensity ("Grayscale Intensity", Range(0, 1)) = 1  // Gri tonlama yoğunluğu
-        [PerRendererData] _Brightness ("Brightness", Range(-10, 10)) = 0  // Parlaklık ayarı
-        [PerRendererData] _Contrast ("Contrast", Range(0, 20)) = 1  // Kontrast ayarı
-        [PerRendererData] _R ("_R", Range(-2, 10)) = 1  // Kontrast ayarı
-        [PerRendererData] _G ("_G", Range(-2, 10)) = 1  // Kontrast ayarı
-        [PerRendererData] _B ("_B", Range(-2, 10)) = 1  // Kontrast ayarı
-        [PerRendererData] [HDR]_TintColor ("Tint Color", Color) = (1, 1, 1, 1)  // Renk çarpanı (Basılacak renk)
+        _MainTex ("Base Texture", 2D) = "white" {}
+        [PerRendererData] _GrayscaleIntensity ("Grayscale Intensity", Range(0, 1)) = 1
+        [PerRendererData] _Brightness ("Brightness", Range(-10, 10)) = 0
+        [PerRendererData] _Contrast ("Contrast", Range(0, 20)) = 1
+        [PerRendererData] _R ("_R", Range(-2, 10)) = 1
+        [PerRendererData] _G ("_G", Range(-2, 10)) = 1
+        [PerRendererData] _B ("_B", Range(-2, 10)) = 1
+        [PerRendererData] _TintColor ("Tint Color", Color) = (1, 1, 1, 1)
+        [PerRendererData] _Column ("Column Index (X)", Float) = 0
+        [PerRendererData] _Row ("Row Index (Y)", Float) = 0
     }
     SubShader
     {
         Tags { "RenderType"="Transparent" "Queue"="Transparent" }
         LOD 100
 
-        Blend SrcAlpha OneMinusSrcAlpha
-
         Pass
         {
+            Tags { "LightMode"="ForwardBase" }
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
+            #pragma multi_compile_instancing
             #include "UnityCG.cginc"
 
             struct appdata_t
@@ -38,14 +40,29 @@ Shader "GJG/Sprite/Item"
                 float4 vertex : SV_POSITION;
             };
 
+                UNITY_INSTANCING_BUFFER_START(Props)
+                UNITY_DEFINE_INSTANCED_PROP(float, _GrayscaleIntensity)
+                #define _GrayscaleIntensity_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(float, _Brightness)
+                #define _Brightness_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(float, _Contrast)
+                #define _Contrast_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(float, _R)
+                #define _R_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(float, _G)
+                #define _G_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(float, _B)
+                #define _B_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(fixed4, _TintColor)
+                #define _TintColor_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(float, _Column)
+                #define _Column_arr Props
+                UNITY_DEFINE_INSTANCED_PROP(float, _Row)
+                #define _Row_arr Props
+   
+                UNITY_INSTANCING_BUFFER_END(Props)
+
             sampler2D _MainTex;
-            float _GrayscaleIntensity;
-            float _Brightness;
-            float _Contrast;
-            float _R;
-            float _G;
-            float _B;
-            fixed4 _TintColor;  // Renk çarpanı (Tint)
 
             v2f vert (appdata_t v)
             {
@@ -55,24 +72,31 @@ Shader "GJG/Sprite/Item"
                 return o;
             }
 
+            float2 GetTileUV(float2 uv, float x, float y)
+            {
+                float2 tileSize = float2(1.0 / 3, 1.0 / 3);
+                float2 tileOffset = float2(x * tileSize.x, y * tileSize.y);
+                return uv * tileSize + tileOffset;
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
-                // Base texture rengini al
-                fixed4 texColor = tex2D(_MainTex, i.uv);
+                float2 uv = GetTileUV(i.uv, UNITY_ACCESS_INSTANCED_PROP(_Column_arr, _Column), UNITY_ACCESS_INSTANCED_PROP(_Row_arr, _Row));
 
-                // RGB'yi gri tona çevirmek için luminance hesaplama
-                float gray = dot(texColor.rgb, float3(_R, _G, _B));
+                fixed4 texColor = tex2D(_MainTex, uv);
 
-                // Gri tonlama yoğunluğunu uygula
-                float finalGray = lerp(texColor.r, gray, _GrayscaleIntensity);
+                float gray = dot(texColor.rgb, float3(UNITY_ACCESS_INSTANCED_PROP(_R_arr, _R), UNITY_ACCESS_INSTANCED_PROP(_G_arr, _G), UNITY_ACCESS_INSTANCED_PROP(_B_arr, _B)));
 
-                // Parlaklık ve kontrast hesaplama
-                finalGray = (finalGray - 0.5) * _Contrast + 0.5;  // Kontrast
-                finalGray += _Brightness;  // Parlaklık
+                float finalGray = lerp(texColor.r, gray, UNITY_ACCESS_INSTANCED_PROP(_GrayscaleIntensity_arr, _GrayscaleIntensity));
 
-                // Final renk (gri ton üzerine renk çarpanı ekleme)
-                fixed4 grayscaleColor = fixed4(finalGray, finalGray, finalGray, texColor.a);
-                return grayscaleColor * _TintColor;  // Renk çarpanı uygula
+                finalGray = (finalGray - 0.5) * UNITY_ACCESS_INSTANCED_PROP(_Contrast_arr, _Contrast) + 0.5; 
+                finalGray += UNITY_ACCESS_INSTANCED_PROP(_Brightness_arr, _Brightness); 
+
+                float4 lastCol = fixed4(finalGray, finalGray, finalGray, texColor.a) * UNITY_ACCESS_INSTANCED_PROP(_TintColor_arr, _TintColor);
+
+                clip(lastCol .a -0.5);
+               
+                return lastCol;
             }
             ENDCG
         }

@@ -7,12 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ItemMainMaterial
-  m_Shader: {fileID: 4800000, guid: 1a974d4915e5af94d930b10f783d75f9, type: 3}
+  m_Name: Tutorial_007_Sprite
+  m_Shader: {fileID: 4800000, guid: 1ef200530b883ff44b0c97c2f061d414, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -22,24 +22,10 @@ Material:
     m_TexEnvs:
     - _MainTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.33333334, y: 0.33333334}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _B: 1.68
-    - _Brightness: -0.21
-    - _Column: 1
-    - _Columns: 3
-    - _Contrast: 2.1
-    - _FrameIndex: 1
-    - _G: 2.9
-    - _GrayscaleIntensity: 0.128
-    - _R: 3.13
-    - _Row: 0
-    - _Rows: 3
-    - _X: 0
-    - _Y: 0
+    m_Floats: []
     m_Colors:
-    - _GridSize: {r: 3, g: 3, b: 0, a: 0}
-    - _TintColor: {r: 0.3450961, g: 0.38133222, b: 0.4433962, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
