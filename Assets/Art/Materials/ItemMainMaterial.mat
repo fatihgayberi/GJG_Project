@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ItemMainMaterial
-  m_Shader: {fileID: 4800000, guid: 1a974d4915e5af94d930b10f783d75f9, type: 3}
+  m_Shader: {fileID: 4800000, guid: 417018c4710f9e84ba3a396d6738d682, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 994266c13b0199445810f0f1596f7625, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -33,13 +33,16 @@ Material:
     - _Contrast: 2.1
     - _FrameIndex: 1
     - _G: 2.9
+    - _Glossiness: 0.5
     - _GrayscaleIntensity: 0.128
+    - _Metallic: 0
     - _R: 3.13
     - _Row: 0
     - _Rows: 3
     - _X: 0
     - _Y: 0
     m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _GridSize: {r: 3, g: 3, b: 0, a: 0}
     - _TintColor: {r: 0.3450961, g: 0.38133222, b: 0.4433962, a: 1}
   m_BuildTextureStacks: []

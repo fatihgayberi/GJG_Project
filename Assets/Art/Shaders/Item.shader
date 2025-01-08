@@ -2,7 +2,10 @@ Shader "GJG/Sprite/Item"
 {
     Properties
     {
-        _MainTex ("Base Texture", 2D) = "white" {}
+        _Color ("Color", Color) = (1,1,1,1)
+        _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _Glossiness ("Smoothness", Range(0,1)) = 0.5
+        _Metallic ("Metallic", Range(0,1)) = 0.0
         [PerRendererData] _GrayscaleIntensity ("Grayscale Intensity", Range(0, 1)) = 1
         [PerRendererData] _Brightness ("Brightness", Range(-10, 10)) = 0
         [PerRendererData] _Contrast ("Contrast", Range(0, 20)) = 1
@@ -15,90 +18,81 @@ Shader "GJG/Sprite/Item"
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
-        LOD 100
+        Tags { "RenderType"="Opaque" }
+        LOD 200
 
-        Pass
+        CGPROGRAM
+        // Physically based Standard lighting model, and enable shadows on all light types
+        #pragma surface surf Standard fullforwardshadows
+
+        // Use shader model 3.0 target, to get nicer looking lighting
+        #pragma target 3.0
+
+        sampler2D _MainTex;
+
+        struct Input
         {
-            Tags { "LightMode"="ForwardBase" }
+            float2 uv_MainTex;
+        };
 
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma multi_compile_instancing
-            #include "UnityCG.cginc"
+        half _Glossiness;
+        half _Metallic;
+        fixed4 _Color;
 
-            struct appdata_t
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
+        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
+        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
+        #pragma instancing_options assumeuniformscaling
 
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
-            };
+        UNITY_INSTANCING_BUFFER_START(Props)
+        UNITY_DEFINE_INSTANCED_PROP(float, _GrayscaleIntensity)
+        #define _GrayscaleIntensity_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(float, _Brightness)
+        #define _Brightness_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(float, _Contrast)
+        #define _Contrast_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(float, _R)
+        #define _R_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(float, _G)
+        #define _G_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(float, _B)
+        #define _B_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(fixed4, _TintColor)
+        #define _TintColor_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(float, _Column)
+        #define _Column_arr Props
+        UNITY_DEFINE_INSTANCED_PROP(float, _Row)
+        #define _Row_arr Props
+        UNITY_INSTANCING_BUFFER_END(Props)
 
-                UNITY_INSTANCING_BUFFER_START(Props)
-                UNITY_DEFINE_INSTANCED_PROP(float, _GrayscaleIntensity)
-                #define _GrayscaleIntensity_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(float, _Brightness)
-                #define _Brightness_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(float, _Contrast)
-                #define _Contrast_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(float, _R)
-                #define _R_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(float, _G)
-                #define _G_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(float, _B)
-                #define _B_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(fixed4, _TintColor)
-                #define _TintColor_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(float, _Column)
-                #define _Column_arr Props
-                UNITY_DEFINE_INSTANCED_PROP(float, _Row)
-                #define _Row_arr Props
-   
-                UNITY_INSTANCING_BUFFER_END(Props)
-
-            sampler2D _MainTex;
-
-            v2f vert (appdata_t v)
-            {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                return o;
-            }
-
-            float2 GetTileUV(float2 uv, float x, float y)
-            {
-                float2 tileSize = float2(1.0 / 3, 1.0 / 3);
-                float2 tileOffset = float2(x * tileSize.x, y * tileSize.y);
-                return uv * tileSize + tileOffset;
-            }
-
-            fixed4 frag (v2f i) : SV_Target
-            {
-                float2 uv = GetTileUV(i.uv, UNITY_ACCESS_INSTANCED_PROP(_Column_arr, _Column), UNITY_ACCESS_INSTANCED_PROP(_Row_arr, _Row));
-
-                fixed4 texColor = tex2D(_MainTex, uv);
-
-                float gray = dot(texColor.rgb, float3(UNITY_ACCESS_INSTANCED_PROP(_R_arr, _R), UNITY_ACCESS_INSTANCED_PROP(_G_arr, _G), UNITY_ACCESS_INSTANCED_PROP(_B_arr, _B)));
-
-                float finalGray = lerp(texColor.r, gray, UNITY_ACCESS_INSTANCED_PROP(_GrayscaleIntensity_arr, _GrayscaleIntensity));
-
-                finalGray = (finalGray - 0.5) * UNITY_ACCESS_INSTANCED_PROP(_Contrast_arr, _Contrast) + 0.5; 
-                finalGray += UNITY_ACCESS_INSTANCED_PROP(_Brightness_arr, _Brightness); 
-
-                float4 lastCol = fixed4(finalGray, finalGray, finalGray, texColor.a) * UNITY_ACCESS_INSTANCED_PROP(_TintColor_arr, _TintColor);
-
-                clip(lastCol .a -0.5);
-               
-                return lastCol;
-            }
-            ENDCG
+        float2 GetTileUV(float2 uv, float x, float y)
+        {
+            float2 tileSize = float2(1.0 / 3, 1.0 / 3);
+            float2 tileOffset = float2(x * tileSize.x, y * tileSize.y);
+            return uv * tileSize + tileOffset;
         }
+
+        void surf (Input IN, inout SurfaceOutputStandard o)
+        {
+            float2 uv = GetTileUV(IN.uv_MainTex, UNITY_ACCESS_INSTANCED_PROP(_Column_arr, _Column), UNITY_ACCESS_INSTANCED_PROP(_Row_arr, _Row));
+
+            fixed4 texColor = tex2D(_MainTex, uv);
+
+            float gray = dot(texColor.rgb, float3(UNITY_ACCESS_INSTANCED_PROP(_R_arr, _R), UNITY_ACCESS_INSTANCED_PROP(_G_arr, _G), UNITY_ACCESS_INSTANCED_PROP(_B_arr, _B)));
+
+            float finalGray = lerp(texColor.r, gray, UNITY_ACCESS_INSTANCED_PROP(_GrayscaleIntensity_arr, _GrayscaleIntensity));
+
+            finalGray = (finalGray - 0.5) * UNITY_ACCESS_INSTANCED_PROP(_Contrast_arr, _Contrast) + 0.5; 
+            finalGray += UNITY_ACCESS_INSTANCED_PROP(_Brightness_arr, _Brightness); 
+
+            float4 lastCol = fixed4(finalGray, finalGray, finalGray, texColor.a) * UNITY_ACCESS_INSTANCED_PROP(_TintColor_arr, _TintColor);
+            clip(lastCol.a - 0.5);
+                
+            o.Albedo = lastCol.rgb;
+            
+            o.Metallic = _Metallic;
+            o.Smoothness = _Glossiness;
+        }
+        ENDCG
     }
+    FallBack "Diffuse"
 }
