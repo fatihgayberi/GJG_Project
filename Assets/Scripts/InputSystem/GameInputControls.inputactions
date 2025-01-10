@@ -1,0 +1,34 @@
+{
+    "name": "GameInputControls",
+    "maps": [
+        {
+            "name": "GridActions",
+            "id": "a76a36b9-dd2a-4d9d-8914-8f865ffc8ca8",
+            "actions": [
+                {
+                    "name": "Touch",
+                    "type": "Button",
+                    "id": "6d6e1501-d39d-4e98-85a3-0c7591d1abd9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "73887b3a-635a-4c5e-8547-b97658e9df8c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

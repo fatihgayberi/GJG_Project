@@ -9,8 +9,8 @@ namespace GJG.GridSystem.Match
     {
         protected GameGrid _grid;
 
-        public abstract HashSet<int2> GetMatchesItem(int2 selectItemIndex, ItemColorType colorType);
-        public abstract int GetMatchesCount(int2 selectItemIndex, ItemColorType colorType);
+        public abstract HashSet<int2> GetMatchesItem(int2 selectItemIndex);
+        public abstract int GetMatchesCount(int2 selectItemIndex);
 
         public MatchCheckerBase(GameGrid grid)
         {

@@ -9,6 +9,7 @@ namespace GJG.GridSystem.Match
         private Queue<int2> _queue;
         private HashSet<int2> _toRemove;
         private int2 _currentIndex;
+        private ItemColorType _colorType;
 
         private int _counter;
 
@@ -26,8 +27,10 @@ namespace GJG.GridSystem.Match
             _toRemove = new();
         }
 
-        public override HashSet<int2> GetMatchesItem(int2 selectItemIndex, ItemColorType colorType)
+        public override HashSet<int2> GetMatchesItem(int2 selectItemIndex)
         {
+            _colorType = _grid.GetNode(selectItemIndex).ColorType;
+
             _queue.Clear();
             _toRemove.Clear();
             _queue.Enqueue(selectItemIndex);
@@ -37,7 +40,7 @@ namespace GJG.GridSystem.Match
                 _currentIndex = _queue.Dequeue();
 
                 if (!_grid.IsValidIndex(_currentIndex)) continue;
-                if (!_grid.GetNode(_currentIndex).IsSame(colorType)) continue;
+                if (!_grid.GetNode(_currentIndex).IsSame(_colorType)) continue;
                 if (_toRemove.Contains(_currentIndex)) continue;
 
                 _toRemove.Add(_currentIndex);
@@ -51,8 +54,10 @@ namespace GJG.GridSystem.Match
             return _toRemove;
         }
 
-        public override int GetMatchesCount(int2 selectItemIndex, ItemColorType colorType)
+        public override int GetMatchesCount(int2 selectItemIndex)
         {
+            _colorType = _grid.GetNode(selectItemIndex).ColorType;
+
             _queue.Clear();
             _queue.Enqueue(selectItemIndex);
 
@@ -63,7 +68,7 @@ namespace GJG.GridSystem.Match
                 _currentIndex = _queue.Dequeue();
 
                 if (!_grid.IsValidIndex(_currentIndex)) continue;
-                if (!_grid.GetNode(_currentIndex).IsSame(colorType)) continue;
+                if (!_grid.GetNode(_currentIndex).IsSame(_colorType)) continue;
 
                 _counter++;
 

@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &227290215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 227290217}
+  - component: {fileID: 227290216}
+  m_Layer: 0
+  m_Name: ItemBlast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &227290216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227290215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadca7eaa3a21e04c86f6b483d0e9e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &227290217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227290215}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 621383053}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &356340054
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +442,7 @@ Transform:
   m_Children:
   - {fileID: 1583155563}
   - {fileID: 854215213}
+  - {fileID: 227290217}
   m_Father: {fileID: 532635805}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -482,6 +527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c2be1fd1c146d4696667dab770000a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: 1f9f8e28f6d40a9499405869e3cf3cc4, type: 3}
 --- !u!4 &1022891672
 Transform:
   m_ObjectHideFlags: 0
@@ -542,7 +588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPainter: {fileID: 854215214}
-  InputManager: {fileID: 1022891671}
+  ItemBlast: {fileID: 227290216}
   gridCoordinatData: {fileID: 11400000, guid: af1c7546999fdf34eb88b8f24aac16ac, type: 2}
   gridData: {fileID: 11400000, guid: 025cec45a73e28644b1df9ed5e254034, type: 2}
   itemPool:

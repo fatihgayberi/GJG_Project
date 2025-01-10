@@ -10,7 +10,7 @@ namespace GJG.GridSystem
     public class GridGenerator : MonoBehaviour
     {
         [SerializeField] private ItemPainter itemPainter;
-        [SerializeField] private InputManager InputManager;
+        [SerializeField] private ItemBlast ItemBlast;
         [SerializeField] private GridCoordinatData gridCoordinatData;
         [SerializeField] private GridData gridData;
         [SerializeField] private Pool<ItemController> itemPool;
@@ -26,7 +26,7 @@ namespace GJG.GridSystem
 
             itemPool.Initialize(gridData.GridSize.x * gridData.GridSize.y);
             itemPainter.Initialize();
-            InputManager.Initialize(_gameGrid);
+            ItemBlast.Initialize(_gameGrid);
             _colorGenerator = new(gridData);
 
             Generate();

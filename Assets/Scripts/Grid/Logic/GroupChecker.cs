@@ -49,7 +49,7 @@ namespace GJG.GridSystem
                     // bunlar zaten daha onceden gruplama yapilarak boyama islemleri yapildigi icin atlaniyor
                     if (_gridCheckFlag.Contains(_index)) continue;
 
-                    _toRemove = _matchStrategy.Strategy.GetMatchesItem(_index, _gameGrid.GetNode(_index).ColorType);
+                    _toRemove = _matchStrategy.Strategy.GetMatchesItem(_index);
                     currentItemType = GetItemType(_toRemove.Count);
 
                     // gruplar zaten kontrol edilerek bulundugu icin bunlari bir daha kontrol etmemek icin atliyoruz
