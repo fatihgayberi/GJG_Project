@@ -1,8 +1,7 @@
-Shader "GJG/Sprite/Item"
+Shader "GJG/Surface/Item"
 {
     Properties
     {
-        _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
@@ -18,7 +17,16 @@ Shader "GJG/Sprite/Item"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+		Tags{ 
+			"RenderType"="Transparent" 
+			"Queue"="Transparent"
+		}
+
+		Blend SrcAlpha OneMinusSrcAlpha
+
+		ZWrite off
+		Cull off
+        
         LOD 200
 
         CGPROGRAM
@@ -37,7 +45,6 @@ Shader "GJG/Sprite/Item"
 
         half _Glossiness;
         half _Metallic;
-        fixed4 _Color;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -85,12 +92,11 @@ Shader "GJG/Sprite/Item"
             finalGray += UNITY_ACCESS_INSTANCED_PROP(_Brightness_arr, _Brightness); 
 
             float4 lastCol = fixed4(finalGray, finalGray, finalGray, texColor.a) * UNITY_ACCESS_INSTANCED_PROP(_TintColor_arr, _TintColor);
+
             clip(lastCol.a - 0.5);
                 
             o.Albedo = lastCol.rgb;
-            
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
+
         }
         ENDCG
     }

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac4352f70969a8f4cb091ee6f739ff5d, type: 3}
+  m_Name: GridData
+  m_EditorClassIdentifier: 
+  gridSize:
+    x: 10
+    y: 12
+  colorData:
+  - {fileID: 11400000, guid: b44d8b2b1ecf8bf4296d0efda27bc950, type: 2}
+  - {fileID: 11400000, guid: b92198ca19e9f6f459334538709fc207, type: 2}
+  - {fileID: 11400000, guid: b07d26c31e70ca649ac57447e34ae60e, type: 2}
+  - {fileID: 11400000, guid: 7d4f72207c5530e409d517b4f22e1b79, type: 2}
+  - {fileID: 11400000, guid: fccd3ba86082ace4298265e8ec476c19, type: 2}
+  - {fileID: 11400000, guid: d96ccf6f2e15d0646af59f372a262077, type: 2}
+  groupData:
+  - itemType: 2
+    maxCount: 4
+  - itemType: 3
+    maxCount: 6
+  - itemType: 4
+    maxCount: 8
