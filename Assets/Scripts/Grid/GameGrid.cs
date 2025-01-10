@@ -71,14 +71,14 @@ namespace GJG.GridSystem
             _grid[index.x, index.y].ColorType = colorType;
         }
 
-        public Vector3 WorldPosToGridIndex(Vector3 worldPosition)
+        public Vector3? WorldPosToGridIndex(Vector3 worldPosition)
         {
             int2 index;
 
             index.x = Mathf.RoundToInt((worldPosition.x - _gridCoordinatData.StartPos.x) / _gridCoordinatData.CellSize.x);
             index.y = Mathf.RoundToInt((worldPosition.y - _gridCoordinatData.StartPos.y) / _gridCoordinatData.CellSize.y);
 
-            return GetItem(index).gameObject.transform.position;
+            return GetItem(index)?.gameObject.transform.position;
         }
 
         /// <summary> Grid itemini return eder </summary>
