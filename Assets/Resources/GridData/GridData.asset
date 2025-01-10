@@ -12,16 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4352f70969a8f4cb091ee6f739ff5d, type: 3}
   m_Name: GridData
   m_EditorClassIdentifier: 
+  matchStrategyType: 1
   gridSize:
-    x: 17
+    x: 19
     y: 10
-  colorData:
-  - {fileID: 11400000, guid: b44d8b2b1ecf8bf4296d0efda27bc950, type: 2}
-  - {fileID: 11400000, guid: b92198ca19e9f6f459334538709fc207, type: 2}
-  - {fileID: 11400000, guid: b07d26c31e70ca649ac57447e34ae60e, type: 2}
-  - {fileID: 11400000, guid: 7d4f72207c5530e409d517b4f22e1b79, type: 2}
-  - {fileID: 11400000, guid: fccd3ba86082ace4298265e8ec476c19, type: 2}
-  - {fileID: 11400000, guid: d96ccf6f2e15d0646af59f372a262077, type: 2}
+  colorInitData:
+  - itemColorType: 1
+    initialPower: 8
+  - itemColorType: 2
+    initialPower: 2
+  - itemColorType: 3
+    initialPower: 1
+  - itemColorType: 4
+    initialPower: 1
+  - itemColorType: 5
+    initialPower: 3
+  - itemColorType: 6
+    initialPower: 1
   groupData:
   - itemType: 2
     maxCount: 4

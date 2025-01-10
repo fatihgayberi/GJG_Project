@@ -5,13 +5,14 @@ using UnityEngine;
 
 namespace GJG.GridSystem.Match
 {
-    public abstract class MatchCheckerBase : MonoBehaviour
+    public abstract class MatchCheckerBase
     {
-        protected GameGrid<ItemController> _grid;
+        protected GameGrid _grid;
 
-        public abstract HashSet<int2> FindMatches(int2 selectItemIndex, ItemColorType colorType);
+        public abstract HashSet<int2> GetMatchesItem(int2 selectItemIndex, ItemColorType colorType);
+        public abstract int GetMatchesCount(int2 selectItemIndex, ItemColorType colorType);
 
-        public virtual void Initialize(GameGrid<ItemController> grid)
+        public MatchCheckerBase(GameGrid grid)
         {
             _grid = grid;
         }

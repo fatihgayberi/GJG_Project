@@ -17,7 +17,7 @@ namespace GJG.Items.ItemColor
 
         [SerializeField] private ItemController itemPrefab;
         [SerializeField] private PainterData[] painterData;
-        [SerializeField] private Dictionary<ItemColorType, PainterData> _painterDataDictionary = new();
+        private Dictionary<ItemColorType, PainterData> _painterDataDictionary = new();
 
         public void Initialize()
         {

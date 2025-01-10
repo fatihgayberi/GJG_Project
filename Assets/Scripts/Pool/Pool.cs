@@ -1,7 +1,7 @@
-using System;
-using UnityEngine;
-using Unity.VisualScripting;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using System;
 
 namespace Wonnasmith.Pooling
 {
@@ -29,11 +29,21 @@ namespace Wonnasmith.Pooling
         }
 
         [SerializeField] private PoolableData poolableData;
+        [SerializeField] private HashSet<PoolData> _poolDatas;
 
-        [SerializeField] private List<PoolData> _poolDatas;
-        public List<PoolData> PoolDatas { get => _poolDatas; set => _poolDatas = value; }
+        public HashSet<PoolData> PoolDatas { get => _poolDatas; set => _poolDatas = value; }
 
         /// <summary> Başlangıç için istenilen sayida objeyi poola kazandirir </summary>
+        public void Initialize(int poolCount)
+        {
+            if (poolableData == null) return;
+
+            poolableData.poolCount = poolCount;
+
+            Initialize();
+        }
+
+        /// <summary> Başlangıç için default sayida objeyi poola kazandirir </summary>
         public void Initialize()
         {
             if (poolableData == null) return;
@@ -47,7 +57,7 @@ namespace Wonnasmith.Pooling
         /// <summary> Kullanılabilir pool objesi return eder </summary>
         public T GetPoolObject()
         {
-            PoolDatas ??= new List<PoolData>();
+            PoolDatas ??= new HashSet<PoolData>();
 
             foreach (PoolData poolData in PoolDatas)
             {
@@ -105,8 +115,6 @@ namespace Wonnasmith.Pooling
         /// <summary> Bir pool Objesi oluşturur </summary>
         private PoolData PoolObjectGenerator()
         {
-            // Debug.Log("PoolObjectGenerator()::1");
-
             if (poolableData == null) return null;
             if (poolableData.poolPrefab == null) return null;
 
@@ -120,9 +128,9 @@ namespace Wonnasmith.Pooling
 
             if (t == null) return null;
 
-            PoolData poolData = new PoolData(t, true);
+            PoolData poolData = new(t, true);
 
-            PoolDatas ??= new List<PoolData>();
+            PoolDatas ??= new HashSet<PoolData>();
 
             PoolDatas.Add(poolData);
 

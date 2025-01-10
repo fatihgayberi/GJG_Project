@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fbead720900174a95ca0328aa0cd3d, type: 3}
   m_Name: GridCoordinatData
   m_EditorClassIdentifier: 
-  cellSize: {x: 1, y: 1}
-  startPos: {x: 2.5, y: 1, z: 0}
+  cellSize: {x: 0.9, y: 1}
+  startPos: {x: 0, y: 0, z: 0}

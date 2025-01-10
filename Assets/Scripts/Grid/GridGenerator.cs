@@ -1,29 +1,39 @@
-using GJG.Items;
 using GJG.Items.ItemColor;
-using Unity.Mathematics;
-using UnityEngine;
 using Wonnasmith.Pooling;
+using Unity.Mathematics;
+using GJG.GJGInput;
+using UnityEngine;
+using GJG.Items;
 
 namespace GJG.GridSystem
 {
     public class GridGenerator : MonoBehaviour
     {
-        [SerializeField] private GridData gridData;
         [SerializeField] private ItemPainter itemPainter;
+        [SerializeField] private InputManager InputManager;
         [SerializeField] private GridCoordinatData gridCoordinatData;
-        [SerializeField] private GroupChecker groupChecker;
+        [SerializeField] private GridData gridData;
         [SerializeField] private Pool<ItemController> itemPool;
 
-        private GameGrid<ItemController> _gameGrid;
+        private GameGrid _gameGrid;
+        private GridColorGenerator _colorGenerator;
+        private GroupChecker _groupChecker;
+        private int2 index;
 
         private void Start()
         {
-            _gameGrid = new GameGrid<ItemController>(gridData);
+            _gameGrid = new GameGrid(gridData, gridCoordinatData);
 
-            itemPool.Initialize();
+            itemPool.Initialize(gridData.GridSize.x * gridData.GridSize.y);
             itemPainter.Initialize();
+            InputManager.Initialize(_gameGrid);
+            _colorGenerator = new(gridData);
 
-            int2 index;
+            Generate();
+        }
+
+        private void Generate()
+        {
             ItemController item;
             ItemColorType colorType;
             Vector3 itemPos = Vector3.zero;
@@ -34,20 +44,19 @@ namespace GJG.GridSystem
                 {
                     item = itemPool.GetPoolObject();
                     item.gameObject.SetActive(true);
-                    colorType = (ItemColorType)UnityEngine.Random.Range(1, 7);
+                    colorType = _colorGenerator.GetColorType();
 
                     itemPos.x = gridCoordinatData.CellSize.x * index.x;
                     itemPos.y = gridCoordinatData.CellSize.y * index.y;
 
                     item.transform.position = itemPos + gridCoordinatData.StartPos;
 
-                    _gameGrid.AddItem(index, item, colorType, ItemType.Default);
+                    _gameGrid.AddItem(index, item, colorType);
                 }
             }
 
-            groupChecker.Init(_gameGrid);
-
-            groupChecker.Check();
+            _groupChecker = new GroupChecker(_gameGrid, gridData, itemPainter);
+            _groupChecker.CheckAllGrid();
         }
 
         private void Update()
@@ -64,20 +73,15 @@ namespace GJG.GridSystem
 
         public void RefreshGrid()
         {
-            int2 index;
-            ItemColorType colorType;
-
             for (index.x = 0; index.x < _gameGrid.Grid.GetLength(0); index.x++)
             {
                 for (index.y = 0; index.y < _gameGrid.Grid.GetLength(1); index.y++)
                 {
-                    colorType = (ItemColorType)UnityEngine.Random.Range(1, 6);
-
-                    _gameGrid.UpdateNodeStatus(index, colorType);
+                    _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType());
                 }
             }
 
-            groupChecker.Check();
+            _groupChecker.CheckAllGrid();
         }
     }
 }

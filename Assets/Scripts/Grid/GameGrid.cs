@@ -1,32 +1,35 @@
 using Unity.Mathematics;
+using UnityEngine;
 using GJG.Items;
 
 namespace GJG.GridSystem
 {
-    public class GameGrid<T>
+    public class GameGrid
     {
-        private GridData gridData;
+        private GridData _gridData;
+        private GridCoordinatData _gridCoordinatData;
 
-        private Node<T>[,] _grid;
+        private Node[,] _grid;
 
-        public GameGrid(GridData gridData)
+        public GameGrid(GridData gridData, GridCoordinatData gridCoordinatData)
         {
-            this.gridData = gridData;
+            _gridData = gridData;
+            _gridCoordinatData = gridCoordinatData;
 
             Create();
         }
 
-        public Node<T>[,] Grid => _grid;
+        public Node[,] Grid => _grid;
 
 
         /// <summary> Grid olusturulur </summary>
         public void Create()
         {
-            _grid = new Node<T>[gridData.GridSize.x, gridData.GridSize.y];
+            _grid = new Node[_gridData.GridSize.x, _gridData.GridSize.y];
 
-            for (int i = 0; i < gridData.GridSize.x; i++)
+            for (int i = 0; i < _gridData.GridSize.x; i++)
             {
-                for (int j = 0; j < gridData.GridSize.y; j++)
+                for (int j = 0; j < _gridData.GridSize.y; j++)
                 {
                     _grid[i, j].Empty();
                 }
@@ -34,7 +37,7 @@ namespace GJG.GridSystem
         }
 
         /// <summary> Grid e ekleme yapar </summary>
-        public bool AddItem(int2 index, T item, ItemColorType itemColorType, ItemType itemType)
+        public bool AddItem(int2 index, ItemController item, ItemColorType itemColorType)
         {
             if (!IsValidIndex(index)) return false;
             if (!_grid[index.x, index.y].IsEmpty) return false;
@@ -56,7 +59,7 @@ namespace GJG.GridSystem
         }
 
         /// <summary> Grid Node return eder </summary>
-        public Node<T> GetNode(int2 index)
+        public Node GetNode(int2 index)
         {
             if (!IsValidIndex(index)) return default;
 
@@ -68,31 +71,26 @@ namespace GJG.GridSystem
             _grid[index.x, index.y].ColorType = colorType;
         }
 
-        /// <summary> Grid itemini return eder </summary>
-        public T GetItem(int2 index)
+        public Vector3 WorldPosToGridIndex(Vector3 worldPosition)
         {
-            if (!IsValidIndex(index)) return default;
+            int2 index;
+
+            index.x = Mathf.RoundToInt((worldPosition.x - _gridCoordinatData.StartPos.x) / _gridCoordinatData.CellSize.x);
+            index.y = Mathf.RoundToInt((worldPosition.y - _gridCoordinatData.StartPos.y) / _gridCoordinatData.CellSize.y);
+
+            return GetItem(index).gameObject.transform.position;
+        }
+
+        /// <summary> Grid itemini return eder </summary>
+        public ItemController GetItem(int2 index)
+        {
+            if (!IsValidIndex(index)) return null;
 
             return _grid[index.x, index.y].item;
         }
 
-        /// <summary> Grid itemini return eder </summary>
-        public void Swap(Node<T> item1, Node<T> item2)
-        {
-            Swap(GetItemIndex(item1), GetItemIndex(item2));
-        }
-
-        /// <summary> Grid itemini return eder </summary>
-        public void Swap(int2 index1, int2 index2)
-        {
-            if (!IsValidIndex(index1)) return;
-            if (!IsValidIndex(index2)) return;
-
-            (_grid[index2.x, index2.y], _grid[index1.x, index1.y]) = (_grid[index1.x, index1.y], _grid[index2.x, index2.y]);
-        }
-
         /// <summary> Grid iteminin indexini return eder </summary>
-        public int2 GetItemIndex(Node<T> item)
+        public int2 GetItemIndex(Node item)
         {
             for (int i = 0; i < _grid.GetLength(0); i++)
             {

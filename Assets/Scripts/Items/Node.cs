@@ -2,14 +2,14 @@ using GJG.Items;
 
 namespace GJG.GridSystem
 {
-    public struct Node<T>
+    public struct Node
     {
         public ItemColorType ColorType;
-        public T item;
+        public ItemController item;
 
         public bool IsEmpty; // node dolu mu
 
-        public Node<T> Empty(bool isEmpty = true)
+        public Node Empty(bool isEmpty = true)
         {
             IsEmpty = isEmpty;
 

@@ -1,36 +1,24 @@
-using System;
-using GJG.Items;
-using UnityEngine;
+using GJG.GridSystem.Match;
 using Unity.Mathematics;
-using GJG.Items.ItemColor;
+using UnityEngine;
+using GJG.Items;
+using System;
 
 namespace GJG.GridSystem
 {
     [CreateAssetMenu(fileName = "GridData", menuName = "GridData", order = 0)]
     public class GridData : ScriptableObject
     {
+        [SerializeField] private MatchStrategyType matchStrategyType;
         [SerializeField, Tooltip("M - N")] private int2 gridSize; // M N
-        [SerializeField, Tooltip("K")] private ColorData[] colorData; // K
+        [SerializeField, Tooltip("K")] private ColorInitData[] colorInitData; // K
         [SerializeField, Tooltip("A - B - C ...")] private GroupData[] groupData; // A - B - C ...
 
+        public MatchStrategyType MatchStrategyType => matchStrategyType;
         public int2 GridSize => gridSize;
+        public GroupData[] GroupDatas => groupData;
+        public ColorInitData[] ColorInitDatas => colorInitData;
 
-        public ItemType GetItemType(int groupCount)
-        {
-            if (groupCount == 1) return ItemType.Default;
-            if (groupCount == 2) return ItemType.Default;
-            if (groupCount == 3) return ItemType.Default;
-            if (groupCount == 4) return ItemType.Default;
-
-            if (groupCount == 5) return ItemType.A;
-            if (groupCount == 6) return ItemType.A;
-            if (groupCount == 7) return ItemType.A;
-
-            if (groupCount == 8) return ItemType.B;
-            if (groupCount == 9) return ItemType.B;
-
-            return ItemType.C;
-        }
 
         [Serializable]
         public class GroupData
@@ -40,6 +28,16 @@ namespace GJG.GridSystem
 
             public ItemType ItemType => itemType;
             public int MaxCount => maxCount;
+        }
+
+        [Serializable]
+        public class ColorInitData
+        {
+            [SerializeField] private ItemColorType itemColorType;
+            [SerializeField] private int initialPower;
+
+            public ItemColorType ItemColorType => itemColorType;
+            public int InitialPower => initialPower;
         }
     }
 }
