@@ -21,19 +21,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 994266c13b0199445810f0f1596f7625, type: 3}
+        m_Texture: {fileID: 2800000, guid: b59e255ca28336542a3a7442d51b32d1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _B: 1.68
     - _Brightness: -0.21
-    - _Column: 1
+    - _Column: 0
     - _Columns: 3
     - _Contrast: 2.1
     - _FrameIndex: 1
     - _G: 2.9
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _GrayscaleIntensity: 0.128
     - _Metallic: 0
     - _R: 3.13

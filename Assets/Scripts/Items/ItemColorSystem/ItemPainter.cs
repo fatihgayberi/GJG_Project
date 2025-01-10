@@ -35,8 +35,18 @@ namespace GJG.Items.ItemColor
         {
             // dictionary kullandigim icin datayi cashlemedim cunku burasi surekli calisacak O(1)
 
-            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, uv.x);
-            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, uv.y);
+            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, uv.y);
+            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, uv.x);
+
+            item.itemRenderer.SetPropertyBlock(GetPainterData(colorType)?.materialPropertyBlock);
+        }
+
+        public void Paint(ItemController item, ItemColorType colorType, ItemType itemType)
+        {
+            // dictionary kullandigim icin datayi cashlemedim cunku burasi surekli calisacak O(1)
+
+            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, GetPainterData(colorType).colorData.GetUV(itemType).y);
+            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, GetPainterData(colorType).colorData.GetUV(itemType).x);
 
             item.itemRenderer.SetPropertyBlock(GetPainterData(colorType)?.materialPropertyBlock);
         }

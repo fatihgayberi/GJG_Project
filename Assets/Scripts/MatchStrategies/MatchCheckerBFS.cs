@@ -1,20 +1,24 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
+using GJG.Items;
 
-namespace GJG.GridSystem
+namespace GJG.GridSystem.Match
 {
     public class MatchCheckerBFS : MatchCheckerBase
     {
         private Queue<int2> _queue;
-        private int2 _currentIndex;
+        private int2 _currentIndex, _neighbourIndex;
 
-        public override void Initialize()
+        public override void Initialize(GameGrid<ItemController> grid)
         {
+            base.Initialize(grid);
             _queue = new();
         }
 
-        public override void FindMatches(int2 selectItemIndex, int2 itemUV, int colorNum, HashSet<int2> toRemove)
+        public override HashSet<int2> FindMatches(int2 selectItemIndex, ItemColorType colorType)
         {
+            HashSet<int2> toRemove = new();
+
             _queue.Clear();
             _queue.Enqueue(selectItemIndex);
 
@@ -22,17 +26,23 @@ namespace GJG.GridSystem
             {
                 _currentIndex = _queue.Dequeue();
 
-                if (grid.IsValidIndex(_currentIndex)) continue;
-                // if (grid.GetItem(_currentIndex).IsSame(colorNum, itemUV)) continue;
+                if (!_grid.IsValidIndex(_currentIndex)) continue;
+                if (!_grid.GetNode(_currentIndex).IsSame(colorType)) continue;
                 if (toRemove.Contains(_currentIndex)) continue;
 
                 toRemove.Add(_currentIndex);
 
-                _queue.Enqueue(new int2(_currentIndex.x + 1, _currentIndex.y));  // Sag
-                _queue.Enqueue(new int2(_currentIndex.x - 1, _currentIndex.y));  // Sol
-                _queue.Enqueue(new int2(_currentIndex.x, _currentIndex.y + 1));  // Ust
-                _queue.Enqueue(new int2(_currentIndex.x, _currentIndex.y - 1));  // Alt
+                for (_neighbourIndex.x = -1; _neighbourIndex.x <= 1; _neighbourIndex.x++)
+                {
+                    for (_neighbourIndex.y = -1; _neighbourIndex.y <= 1; _neighbourIndex.y++)
+                    {
+                        // komsulari ekliyoruz
+                        _queue.Enqueue(_neighbourIndex);
+                    }
+                }
             }
+
+            return toRemove;
         }
     }
 }

@@ -1,11 +1,10 @@
-using Unity.Mathematics;
+using GJG.Items;
 
 namespace GJG.GridSystem
 {
     public struct Node<T>
     {
-        public int ColorNum;
-        public int2 index;
+        public ItemColorType ColorType;
         public T item;
 
         public bool IsEmpty; // node dolu mu
@@ -17,9 +16,9 @@ namespace GJG.GridSystem
             return this;
         }
 
-        public bool IsSame(int colorNum, int2 index)
+        public bool IsSame(ItemColorType colorType)
         {
-            return ColorNum.Equals(colorNum) && index.Equals(index);
+            return ColorType == colorType;
         }
     }
 }

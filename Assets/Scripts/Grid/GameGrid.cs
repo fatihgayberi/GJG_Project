@@ -1,18 +1,16 @@
 using Unity.Mathematics;
-using UnityEngine;
+using GJG.Items;
 
 namespace GJG.GridSystem
 {
     public class GameGrid<T>
     {
-        private GridLogic gridLogic;
         private GridData gridData;
 
         private Node<T>[,] _grid;
 
-        public GameGrid(GridLogic gridLogic, GridData gridData)
+        public GameGrid(GridData gridData)
         {
-            this.gridLogic = gridLogic;
             this.gridData = gridData;
 
             Create();
@@ -36,20 +34,13 @@ namespace GJG.GridSystem
         }
 
         /// <summary> Grid e ekleme yapar </summary>
-        public bool AddItem(int2 index, T item)
+        public bool AddItem(int2 index, T item, ItemColorType itemColorType, ItemType itemType)
         {
-            if (!IsValidIndex(index))
-            {
-                Debug.Log("return false::");
-                return false;
-            }
-            if (!_grid[index.x, index.y].IsEmpty)
-            {
-                Debug.Log("return false::");
-                return false;
-            }
+            if (!IsValidIndex(index)) return false;
+            if (!_grid[index.x, index.y].IsEmpty) return false;
 
             _grid[index.x, index.y].item = item;
+            _grid[index.x, index.y].ColorType = itemColorType;
 
             return true;
         }
@@ -70,6 +61,11 @@ namespace GJG.GridSystem
             if (!IsValidIndex(index)) return default;
 
             return _grid[index.x, index.y];
+        }
+
+        public void UpdateNodeStatus(int2 index, ItemColorType colorType)
+        {
+            _grid[index.x, index.y].ColorType = colorType;
         }
 
         /// <summary> Grid itemini return eder </summary>

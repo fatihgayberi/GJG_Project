@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GridData
   m_EditorClassIdentifier: 
   gridSize:
-    x: 10
-    y: 12
+    x: 17
+    y: 10
   colorData:
   - {fileID: 11400000, guid: b44d8b2b1ecf8bf4296d0efda27bc950, type: 2}
   - {fileID: 11400000, guid: b92198ca19e9f6f459334538709fc207, type: 2}
