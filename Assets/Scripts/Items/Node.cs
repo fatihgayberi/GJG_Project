@@ -1,11 +1,13 @@
 using GJG.Items;
+using UnityEngine;
 
 namespace GJG.GridSystem
 {
     public struct Node
     {
         public ItemColorType ColorType;
-        public ItemController item;
+        public ItemBase item;
+        public Vector3 nodePos;
 
         public bool IsEmpty; // node dolu mu
 

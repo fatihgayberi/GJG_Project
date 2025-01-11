@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 830757175113513660}
   - component: {fileID: 830757175113513661}
   - component: {fileID: 830757175113513659}
-  - component: {fileID: 6221333274061357631}
+  - component: {fileID: 3057287102824406536}
   m_Layer: 0
   m_Name: BlastItemPrefab
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6221333274061357631
+--- !u!114 &3057287102824406536
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 830757175113513656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cac262f50cf5f38499762ac62472f2c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 30b7dd6de8c0f49428ada8632544ce8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemRenderer: {fileID: 830757175113513659}

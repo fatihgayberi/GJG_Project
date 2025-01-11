@@ -40,6 +40,7 @@ namespace GJG.GridSystem.Match
                 _currentIndex = _stack.Pop();
 
                 if (!_grid.IsValidIndex(_currentIndex)) continue;
+                if (_grid.GetNode(_currentIndex).IsEmpty) continue;
                 if (!_grid.GetNode(_currentIndex).IsSame(_colorType)) continue;
                 if (_toRemove.Contains(_currentIndex)) continue;
 

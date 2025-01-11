@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 227290217}
   - component: {fileID: 227290216}
   m_Layer: 0
-  m_Name: ItemBlast
+  m_Name: BlastManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,7 +254,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356340054}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.094, y: -0.754, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -490,14 +490,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7737cf043a7fd21419e55390afca5162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 6221333274061357631, guid: 3416a4690940f9647808b55d11427934, type: 3}
   painterData:
-  - colorData: {fileID: 11400000, guid: b44d8b2b1ecf8bf4296d0efda27bc950, type: 2}
-  - colorData: {fileID: 11400000, guid: b92198ca19e9f6f459334538709fc207, type: 2}
-  - colorData: {fileID: 11400000, guid: b07d26c31e70ca649ac57447e34ae60e, type: 2}
-  - colorData: {fileID: 11400000, guid: 7d4f72207c5530e409d517b4f22e1b79, type: 2}
-  - colorData: {fileID: 11400000, guid: fccd3ba86082ace4298265e8ec476c19, type: 2}
-  - colorData: {fileID: 11400000, guid: d96ccf6f2e15d0646af59f372a262077, type: 2}
+    itemPrefab: {fileID: 3057287102824406536, guid: 3416a4690940f9647808b55d11427934, type: 3}
+    propertyDatas:
+    - colorData: {fileID: 11400000, guid: b44d8b2b1ecf8bf4296d0efda27bc950, type: 2}
+    - colorData: {fileID: 11400000, guid: b92198ca19e9f6f459334538709fc207, type: 2}
+    - colorData: {fileID: 11400000, guid: b07d26c31e70ca649ac57447e34ae60e, type: 2}
+    - colorData: {fileID: 11400000, guid: 7d4f72207c5530e409d517b4f22e1b79, type: 2}
+    - colorData: {fileID: 11400000, guid: fccd3ba86082ace4298265e8ec476c19, type: 2}
+    - colorData: {fileID: 11400000, guid: d96ccf6f2e15d0646af59f372a262077, type: 2}
 --- !u!1 &1022891670
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,9 +553,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1583155563}
-  - component: {fileID: 1583155564}
+  - component: {fileID: 1583155565}
   m_Layer: 0
-  m_Name: GridGenerator
+  m_Name: GridManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -575,7 +576,7 @@ Transform:
   m_Father: {fileID: 621383053}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1583155564
+--- !u!114 &1583155565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -584,11 +585,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1583155562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f35ec786e24fc8f4190376d0ee46d51e, type: 3}
+  m_Script: {fileID: 11500000, guid: ae8ff8bf9c102c245a3ea8e14511e011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemPainter: {fileID: 854215214}
-  ItemBlast: {fileID: 227290216}
+  blastManager: {fileID: 227290216}
   gridCoordinatData: {fileID: 11400000, guid: af1c7546999fdf34eb88b8f24aac16ac, type: 2}
   gridData: {fileID: 11400000, guid: 025cec45a73e28644b1df9ed5e254034, type: 2}
   itemPool:

@@ -10,12 +10,14 @@ namespace GJG.GridSystem
     public class GridData : ScriptableObject
     {
         [SerializeField] private MatchStrategyType matchStrategyType;
+        [SerializeField] private int poolOffset;
         [SerializeField, Tooltip("M - N")] private int2 gridSize; // M N
         [SerializeField, Tooltip("K")] private ColorInitData[] colorInitData; // K
         [SerializeField, Tooltip("A - B - C ...")] private GroupData[] groupData; // A - B - C ...
 
         public MatchStrategyType MatchStrategyType => matchStrategyType;
         public int2 GridSize => gridSize;
+        public int PoolOffset => poolOffset;
         public GroupData[] GroupDatas => groupData;
         public ColorInitData[] ColorInitDatas => colorInitData;
 

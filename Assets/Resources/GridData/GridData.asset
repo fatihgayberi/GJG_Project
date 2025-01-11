@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: GridData
   m_EditorClassIdentifier: 
   matchStrategyType: 1
+  poolOffset: 30
   gridSize:
-    x: 19
-    y: 10
+    x: 3
+    y: 3
   colorInitData:
   - itemColorType: 1
     initialPower: 8

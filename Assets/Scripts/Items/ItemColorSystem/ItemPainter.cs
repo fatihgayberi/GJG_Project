@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using Unity.VisualScripting;
+using Unity.Mathematics;
 using UnityEngine;
+using System;
 
 namespace GJG.Items.ItemColor
 {
@@ -11,68 +11,72 @@ namespace GJG.Items.ItemColor
         [Serializable]
         private class PainterData
         {
+            public ItemBase itemPrefab;
+            public PropertyData[] propertyDatas;
+        }
+
+        [Serializable]
+        private class PropertyData
+        {
             public ColorData colorData;
             [HideInInspector] public MaterialPropertyBlock materialPropertyBlock;
         }
 
-        [SerializeField] private ItemController itemPrefab;
-        [SerializeField] private PainterData[] painterData;
-        private Dictionary<ItemColorType, PainterData> _painterDataDictionary = new();
+        [SerializeField] private PainterData painterData;
+
+        private Dictionary<ItemColorType, PropertyData> _propertyDataDictionary = new();
 
         public void Initialize()
         {
-            foreach (PainterData data in painterData)
+            foreach (PropertyData data in painterData.propertyDatas)
             {
                 // daha sonradan hizli search yapabilmek icin dictionarye tasidik datayi, cunku inspectorden direkt verilmiyordu
-                _painterDataDictionary.Add(data.colorData.ItemColorType, data);
+                _propertyDataDictionary.Add(data.colorData.ItemColorType, data);
 
                 // propertyBlocklari initialize ettik 
-                MaterialPropertyBlockInitializer(data);
+                PropertyDataInitializer(data);
             }
         }
 
-        public void Paint(ItemController item, ItemColorType colorType, int2 uv)
+        public void Paint(IPaintable paintable, ItemColorType colorType, int2 uv)
         {
             // dictionary kullandigim icin datayi cashlemedim cunku burasi surekli calisacak O(1)
 
-            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, uv.y);
-            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, uv.x);
+            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, uv.y);
+            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, uv.x);
 
-            item.itemRenderer.SetPropertyBlock(GetPainterData(colorType)?.materialPropertyBlock);
+            paintable.Renderer.SetPropertyBlock(GetPropertyData(colorType)?.materialPropertyBlock);
         }
 
-        public void Paint(ItemController item, ItemColorType colorType, ItemType itemType)
+        public void Paint(IPaintable paintable, ItemColorType colorType, ItemType itemType)
         {
             // dictionary kullandigim icin datayi cashlemedim cunku burasi surekli calisacak O(1)
 
-            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, GetPainterData(colorType).colorData.GetUV(itemType).y);
-            GetPainterData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, GetPainterData(colorType).colorData.GetUV(itemType).x);
-
-            item.itemRenderer.SetPropertyBlock(GetPainterData(colorType)?.materialPropertyBlock);
+            Paint(paintable, colorType, GetPropertyData(colorType).colorData.GetUV(itemType));
         }
 
-        private PainterData GetPainterData(ItemColorType itemColorType)
+        private PropertyData GetPropertyData(ItemColorType itemColorType)
         {
-            if (_painterDataDictionary == null) return null;
-            if (!_painterDataDictionary.ContainsKey(itemColorType)) return null;
+            if (_propertyDataDictionary == null) return null;
+            if (!_propertyDataDictionary.ContainsKey(itemColorType)) return null;
 
-            return _painterDataDictionary[itemColorType];
+            return _propertyDataDictionary[itemColorType];
         }
 
-        private void MaterialPropertyBlockInitializer(PainterData painterData)
+        private void PropertyDataInitializer(PropertyData propertyData)
         {
-            painterData.materialPropertyBlock = new();
+            propertyData.materialPropertyBlock = new();
 
             // property blocklari her udpate islemi icin const degerleri bunlar olacagi icin bunları cashledik
-            itemPrefab.itemRenderer.GetPropertyBlock(painterData.materialPropertyBlock);
+            painterData.itemPrefab.Renderer.GetPropertyBlock(propertyData.materialPropertyBlock);
 
-            painterData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.GrayscaleIntensity, painterData.colorData.GrayscaleIntensity);
-            painterData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.Brightness, painterData.colorData.Brightness);
-            painterData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.Contrast, painterData.colorData.Contrast);
-            painterData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.R, painterData.colorData.ColorLuminance.x);
-            painterData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.G, painterData.colorData.ColorLuminance.y);
-            painterData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.B, painterData.colorData.ColorLuminance.z);
-            painterData.materialPropertyBlock.SetColor(ShaderPopertyIDData.TintColor, painterData.colorData.TintColor);
+            propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.GrayscaleIntensity, propertyData.colorData.GrayscaleIntensity);
+            propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.Brightness, propertyData.colorData.Brightness);
+            propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.Contrast, propertyData.colorData.Contrast);
+            propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.R, propertyData.colorData.ColorLuminance.x);
+            propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.G, propertyData.colorData.ColorLuminance.y);
+            propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.B, propertyData.colorData.ColorLuminance.z);
+            propertyData.materialPropertyBlock.SetColor(ShaderPopertyIDData.TintColor, propertyData.colorData.TintColor);
         }
     }
 }
