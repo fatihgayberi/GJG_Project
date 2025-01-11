@@ -9,10 +9,12 @@ namespace GJG.GridSystem
     class GridDropper
     {
         private GameGrid _gameGrid;
+        private GroupChecker _groupChecker;
 
-        public GridDropper(GameGrid gameGrid)
+        public GridDropper(GameGrid gameGrid, GroupChecker groupChecker)
         {
             _gameGrid = gameGrid;
+            _groupChecker = groupChecker;
         }
 
         public void Drop(int columnIndex)
@@ -31,7 +33,7 @@ namespace GJG.GridSystem
                         {
                             // itemIndexies[j] ustteki ilk dolu index
 
-                            ItemMove(_gameGrid.GetItem(itemIndexies[j]).transform, _gameGrid.GetNode(itemIndexies[i]).nodePos).Forget();
+                            ItemMove(_gameGrid.GetItem(itemIndexies[j]).transform, _gameGrid.GetNode(itemIndexies[i]).nodePos, itemIndexies[i]).Forget();
                             _gameGrid.Swap(itemIndexies[i], itemIndexies[j]);
                             break;
                         }
@@ -40,7 +42,7 @@ namespace GJG.GridSystem
             }
         }
 
-        private async UniTaskVoid ItemMove(Transform itemTR, Vector3 targetPos)
+        private async UniTaskVoid ItemMove(Transform itemTR, Vector3 targetPos, int2 index)
         {
             while (true)
             {
@@ -48,7 +50,11 @@ namespace GJG.GridSystem
 
                 itemTR.position = Vector3.MoveTowards(itemTR.position, targetPos, 5 * Time.deltaTime);
 
-                if (itemTR.position == targetPos) break;
+                if (itemTR.position == targetPos)
+                {
+                    _groupChecker.CheckJustItem(index);
+                    break;
+                }
             }
         }
     }

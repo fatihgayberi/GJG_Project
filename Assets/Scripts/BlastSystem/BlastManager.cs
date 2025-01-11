@@ -6,13 +6,12 @@ namespace GJG.BlastSystem
     public class BlastManager : MonoBehaviour
     {
         private GameGrid _gameGrid;
-        private Blast _blast;
 
-        public void Initialize(GameGrid gameGrid, GridData gridData)
+        public void Initialize(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker)
         {
             _gameGrid = gameGrid;
 
-            _blast = new Blast(gameGrid, gridData);
+            new Blast(gameGrid, gridData, groupChecker);
         }
     }
 }

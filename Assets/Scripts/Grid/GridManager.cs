@@ -33,7 +33,7 @@ namespace GJG.GridSystem
             _groupChecker.CheckAllGrid();
 
             // patlatma islemlerine hazirlandi
-            blastManager.Initialize(_gridGenerator.Grid, gridData);
+            blastManager.Initialize(_gridGenerator.Grid, gridData, _groupChecker);
         }
 
         public void TestUpdate()

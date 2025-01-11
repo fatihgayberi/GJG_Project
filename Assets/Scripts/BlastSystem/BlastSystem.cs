@@ -16,10 +16,10 @@ namespace GJG.BlastSystem
 
         private Vector3 _worldPosition;
 
-        public Blast(GameGrid gameGrid, GridData gridData)
+        public Blast(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker)
         {
             _gameGrid = gameGrid;
-            _gridDropper = new GridDropper(_gameGrid);
+            _gridDropper = new GridDropper(_gameGrid, groupChecker);
             InputEvents.ScreenTouch += OnScreenTouch;
 
             _matchStrategy = new MatchStrategy(_gameGrid, gridData.MatchStrategyType);
@@ -48,10 +48,7 @@ namespace GJG.BlastSystem
                 _gameGrid.GetItem(matchsItemIndex).gameObject.SetActive(false);
                 _gameGrid.RemoveItem(matchsItemIndex);
 
-                if (!dropedColumn.Contains(matchsItemIndex.x))
-                {
-                    dropedColumn.Add(matchsItemIndex.x);
-                }
+                dropedColumn.Add(matchsItemIndex.x);
             }
 
             foreach (var item in dropedColumn)

@@ -62,8 +62,18 @@ namespace GJG.GridSystem
             }
         }
 
+        public void CheckJustItem(int2 index)
+        {
+            _toRemove = _matchStrategy.Strategy.GetMatchesItem(index);
+
+            foreach (int2 removeIndex in _toRemove)
+            {
+                _painter.Paint(_gameGrid.GetItem(removeIndex), _gameGrid.GetNode(removeIndex).ColorType, GetItemType(_toRemove.Count));
+            }
+        }
+
         /// <summary> group counttan büyük en küçük maxcount u bulur o da bize tipi verir </summary>
-        public ItemType GetItemType(int groupCount)
+        private ItemType GetItemType(int groupCount)
         {
             // maxcountlara gore buyukten kucuge siraladigimiz icin grup sayisinin maxcounttan buyuk oldugu datayi bulmammiz yeterli
             for (_groupDatasIndex = 0; _groupDatasIndex < _groupDatasLength; _groupDatasIndex++)
