@@ -2,6 +2,7 @@ using Wonnasmith.Pooling;
 using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
+using GJG.Items.ItemColor;
 
 namespace GJG.GridSystem
 {
@@ -12,14 +13,16 @@ namespace GJG.GridSystem
         [SerializeField] private Pool<ItemBlast> _itemPool;
 
         private GameGrid _gameGrid;
+        private ItemPainter _itemPainter;
         private GridColorGenerator _colorGenerator;
         private int2 index;
 
         public GameGrid Grid => _gameGrid;
 
-        public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBlast> itemPool)
+        public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBlast> itemPool, ItemPainter itemPainter)
         {
             _gridCoordinatData = gridCoordinatData;
+            _itemPainter = itemPainter;
             _itemPool = itemPool;
             _gridData = gridData;
 
@@ -40,23 +43,21 @@ namespace GJG.GridSystem
         private void GridGenerate()
         {
             ItemBase item;
-            ItemColorType colorType;
             Vector3 itemPos = Vector3.zero;
 
             for (index.x = 0; index.x < _gameGrid.RowLength; index.x++)
             {
                 for (index.y = 0; index.y < _gameGrid.ColumnLength; index.y++)
                 {
-                    item = _itemPool.GetPoolObject();
+                    item = GetNewItem();
                     item.gameObject.SetActive(true);
-                    colorType = _colorGenerator.GetColorType();
 
                     itemPos.x = _gridCoordinatData.CellSize.x * index.x;
                     itemPos.y = _gridCoordinatData.CellSize.y * index.y;
 
                     item.transform.position = itemPos + _gridCoordinatData.StartPos;
 
-                    _gameGrid.AddItem(index, item, colorType, itemPos + _gridCoordinatData.StartPos);
+                    _gameGrid.AddItem(index, item, itemPos + _gridCoordinatData.StartPos);
                 }
             }
         }
@@ -70,6 +71,21 @@ namespace GJG.GridSystem
                     _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType());
                 }
             }
+        }
+
+        public ItemBlast GetNewItem()
+        {
+            ItemBlast itemBlast = _itemPool.GetPoolObject();
+            itemBlast.ColorType = _colorGenerator.GetColorType();
+
+            _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Default);
+
+            return itemBlast;
+        }
+
+        public void RePoolObject(ItemBlast itemBlast)
+        {
+            _itemPool.RePoolObject(itemBlast);
         }
     }
 }

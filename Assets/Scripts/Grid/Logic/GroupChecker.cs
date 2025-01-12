@@ -56,7 +56,7 @@ namespace GJG.GridSystem
                     foreach (int2 removeIndex in _toRemove)
                     {
                         _gridCheckFlag.Add(removeIndex);
-                        _painter.Paint(_gameGrid.GetItem(removeIndex), _gameGrid.GetNode(removeIndex).ColorType, currentItemType);
+                        _painter.Paint(_gameGrid.GetItem(removeIndex), _gameGrid.GetNode(removeIndex).ItemBase.ColorType, currentItemType);
                     }
                 }
             }
@@ -68,7 +68,7 @@ namespace GJG.GridSystem
 
             foreach (int2 removeIndex in _toRemove)
             {
-                _painter.Paint(_gameGrid.GetItem(removeIndex), _gameGrid.GetNode(removeIndex).ColorType, GetItemType(_toRemove.Count));
+                _painter.Paint(_gameGrid.GetItem(removeIndex), _gameGrid.GetNode(removeIndex).ItemBase.ColorType, GetItemType(_toRemove.Count));
             }
         }
 

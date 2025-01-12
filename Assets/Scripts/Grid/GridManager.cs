@@ -20,11 +20,11 @@ namespace GJG.GridSystem
 
         private void Start()
         {
-            // grid uretildi
-            _gridGenerator = new GridGenerator(gridCoordinatData, gridData, itemPool);
-
             // boyama icin hazirlik yapildi
             itemPainter.Initialize();
+            
+            // grid uretildi
+            _gridGenerator = new GridGenerator(gridCoordinatData, gridData, itemPool, itemPainter);
 
             // grid gruplama hazirlandi
             _groupChecker = new GroupChecker(_gridGenerator.Grid, gridData, itemPainter);
@@ -33,7 +33,7 @@ namespace GJG.GridSystem
             _groupChecker.CheckAllGrid();
 
             // patlatma islemlerine hazirlandi
-            blastManager.Initialize(_gridGenerator.Grid, gridData, _groupChecker);
+            blastManager.Initialize(_gridGenerator.Grid, gridData, _groupChecker, _gridGenerator);
         }
 
         public void TestUpdate()

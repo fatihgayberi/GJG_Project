@@ -15,8 +15,8 @@ MonoBehaviour:
   matchStrategyType: 1
   poolOffset: 30
   gridSize:
-    x: 3
-    y: 3
+    x: 1
+    y: 10
   colorInitData:
   - itemColorType: 1
     initialPower: 8

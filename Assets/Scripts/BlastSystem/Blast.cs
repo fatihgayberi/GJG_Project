@@ -5,21 +5,26 @@ using GJG.GridSystem;
 using GJG.GJGInput;
 using UnityEngine;
 using GJG.Items;
+using System;
 
 namespace GJG.BlastSystem
 {
+    [Serializable]
     public class Blast
     {
         private MatchStrategy _matchStrategy;
         private GameGrid _gameGrid;
         private GridDropper _gridDropper;
+        private GridGenerator _gridGenerator;
 
         private Vector3 _worldPosition;
 
-        public Blast(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker)
+        public Blast(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker, GridGenerator gridGenerator)
         {
             _gameGrid = gameGrid;
-            _gridDropper = new GridDropper(_gameGrid, groupChecker);
+            _gridGenerator = gridGenerator;
+
+            _gridDropper = new GridDropper(_gameGrid, groupChecker, gridGenerator);
             InputEvents.ScreenTouch += OnScreenTouch;
 
             _matchStrategy = new MatchStrategy(_gameGrid, gridData.MatchStrategyType);
@@ -42,20 +47,25 @@ namespace GJG.BlastSystem
             HashSet<int2> matchsItem = _matchStrategy.Strategy.GetMatchesItem(itemIndex);
 
             HashSet<int> dropedColumn = new();
+            Dictionary<int, int> dropedRow = new();
 
             foreach (var matchsItemIndex in matchsItem)
             {
                 _gameGrid.GetItem(matchsItemIndex).gameObject.SetActive(false);
                 _gameGrid.RemoveItem(matchsItemIndex);
 
+                if (_gameGrid.GetItem(itemIndex) is ItemBlast itemBlast)
+                {
+                    _gridGenerator.RePoolObject(itemBlast);
+                }
+
+                dropedRow.TryAdd(matchsItemIndex.x, 0);
+                ++dropedRow[matchsItemIndex.x];
+
                 dropedColumn.Add(matchsItemIndex.x);
             }
 
-            foreach (var item in dropedColumn)
-            {
-                _gridDropper.Drop(item);
-            }
-
+            _gridDropper.Drop(dropedColumn, dropedRow);
         }
 
         private void OnDrawGizmos()

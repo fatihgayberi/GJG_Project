@@ -5,13 +5,11 @@ namespace GJG.BlastSystem
 {
     public class BlastManager : MonoBehaviour
     {
-        private GameGrid _gameGrid;
+        public Blast blast;
 
-        public void Initialize(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker)
+        public void Initialize(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker, GridGenerator gridGenerator)
         {
-            _gameGrid = gameGrid;
-
-            new Blast(gameGrid, gridData, groupChecker);
+            blast = new Blast(gameGrid, gridData, groupChecker, gridGenerator);
         }
     }
 }
