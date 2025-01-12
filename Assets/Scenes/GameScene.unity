@@ -499,7 +499,7 @@ MonoBehaviour:
     - colorData: {fileID: 11400000, guid: 7d4f72207c5530e409d517b4f22e1b79, type: 2}
     - colorData: {fileID: 11400000, guid: fccd3ba86082ace4298265e8ec476c19, type: 2}
     - colorData: {fileID: 11400000, guid: d96ccf6f2e15d0646af59f372a262077, type: 2}
-  - itemPrefab: {fileID: 3057287102824406536, guid: d9c3aaa6bd99c7b45bf1f9dbbb0f73f5, type: 3}
+  - itemPrefab: {fileID: 328725299155325122, guid: d9c3aaa6bd99c7b45bf1f9dbbb0f73f5, type: 3}
     propertyDatas:
     - colorData: {fileID: 11400000, guid: 99275f8c405db63459d0a527bf5870c2, type: 2}
 --- !u!1 &1022891670

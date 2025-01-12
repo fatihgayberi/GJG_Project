@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 830757175113513660}
   - component: {fileID: 830757175113513661}
   - component: {fileID: 830757175113513659}
-  - component: {fileID: 3057287102824406536}
+  - component: {fileID: 328725299155325122}
   m_Layer: 0
-  m_Name: BlastItemPrefab
+  m_Name: ItemObstaclePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c21f60b8c6637fd498811c273b1a026d, type: 2}
+  - {fileID: 2100000, guid: dc5b30b6efe80a748887daf5564b4216, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3057287102824406536
+--- !u!114 &328725299155325122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 830757175113513656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30b7dd6de8c0f49428ada8632544ce8c, type: 3}
+  m_Script: {fileID: 11500000, guid: 889d4620401082a429bab998c328dd72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemRenderer: {fileID: 830757175113513659}

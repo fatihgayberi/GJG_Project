@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 830757175113513659}
   - component: {fileID: 3057287102824406536}
   m_Layer: 0
-  m_Name: ObstaclePrefab
+  m_Name: ItemBlastPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dc5b30b6efe80a748887daf5564b4216, type: 2}
+  - {fileID: 2100000, guid: c21f60b8c6637fd498811c273b1a026d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,5 +97,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemRenderer: {fileID: 830757175113513659}
-  CanSelect: 0
-  canMatch: 1

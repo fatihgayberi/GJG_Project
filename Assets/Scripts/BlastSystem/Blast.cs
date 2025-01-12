@@ -19,6 +19,14 @@ namespace GJG.BlastSystem
 
         private Vector3 _worldPosition;
 
+        private static readonly int2[] _neighbourIndex = new int2[]
+        {
+            new (1, 0),
+            new (-1, 0),
+            new (0, 1),
+            new (0, -1),
+        };
+
         public Blast(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker, GridGenerator gridGenerator)
         {
             _gameGrid = gameGrid;
@@ -43,8 +51,11 @@ namespace GJG.BlastSystem
 
             // bos bir yere tiklandi o yuden item null geldi
             if (itemBase == null) return;
+            if (itemBase is not ISellectableItem) return;
 
             HashSet<int2> matchsItem = _matchStrategy.Strategy.GetMatchesItem(itemIndex);
+
+            matchsItem.UnionWith(ObstacleBlastCheck(matchsItem));
 
             HashSet<int> dropedColumn = new();
             Dictionary<int, int> dropedRow = new();
@@ -56,7 +67,11 @@ namespace GJG.BlastSystem
 
                 if (_gameGrid.GetItem(itemIndex) is ItemBlast itemBlast)
                 {
-                    _gridGenerator.RePoolObject(itemBlast);
+                    _gridGenerator.RePoolObject(itemBlast, ItemCategoryType.Blast);
+                }
+                else if (_gameGrid.GetItem(itemIndex) is ItemObstacle itemObstacle)
+                {
+                    _gridGenerator.RePoolObject(itemObstacle, ItemCategoryType.Obstacle);
                 }
 
                 dropedRow.TryAdd(matchsItemIndex.x, 0);
@@ -66,6 +81,35 @@ namespace GJG.BlastSystem
             }
 
             _gridDropper.Drop(dropedColumn, dropedRow);
+        }
+
+        private HashSet<int2> ObstacleBlastCheck(HashSet<int2> matchsItem)
+        {
+            HashSet<int2> neighBours = new();
+            HashSet<int2> blastObstacleIndex = new();
+
+            foreach (var matchsIndex in matchsItem)
+            {
+                foreach (var item in _neighbourIndex)
+                {
+                    neighBours.Add(item + matchsIndex);
+                }
+            }
+
+            foreach (var neighbour in neighBours)
+            {
+                if (_gameGrid.GetItem(neighbour) is ItemObstacle obstacle)
+                {
+                    obstacle.health--;
+
+                    if (obstacle.health <= 0)
+                    {
+                        blastObstacleIndex.Add(neighbour);
+                    }
+                }
+            }
+
+            return blastObstacleIndex;
         }
 
         private void OnDrawGizmos()

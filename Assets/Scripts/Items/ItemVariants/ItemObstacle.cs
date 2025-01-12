@@ -1,12 +1,12 @@
-using UnityEngine;
-
 namespace GJG.Items
 {
-    public class ItemBreakable : ItemBase
+    public class ItemObstacle : ItemBase
     {
+        public int health = 0;
+
         public override void AddedGrid()
         {
-
+            health = 2;
         }
 
         public override void RemovedGrid()

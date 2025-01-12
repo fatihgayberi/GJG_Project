@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GJG.GridSystem.Match;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace GJG.GridSystem
     [CreateAssetMenu(fileName = "GridData", menuName = "GridData", order = 0)]
     public class GridData : ScriptableObject
     {
+        [SerializeField] private List<int2> obstacleIndex;
         [SerializeField] private MatchStrategyType matchStrategyType;
         [SerializeField] private int poolOffset;
         [SerializeField, Tooltip("M - N")] private int2 gridSize; // M N
@@ -22,6 +24,7 @@ namespace GJG.GridSystem
         public GroupData[] GroupDatas => groupData;
         // public ColorInitData[] ColorInitDatas => colorInitData;
         public GridCategoryColorData[] GridCategoryColorDatas => gridCategoryColorData;
+        public List<int2> ObstacleIndex => obstacleIndex;
 
 
         [Serializable]

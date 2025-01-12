@@ -12,8 +12,8 @@ namespace GJG.GridSystem
         [SerializeField] private BlastManager blastManager;
         [SerializeField] private GridCoordinatData gridCoordinatData;
         [SerializeField] private GridData gridData;
-        [SerializeField] private Pool<ItemBlast> itemPool;
-        [SerializeField] private Pool<ItemBlast> _obstaclePool;
+        [SerializeField] private Pool<ItemBase> itemPool;
+        [SerializeField] private Pool<ItemBase> _obstaclePool;
 
         private GridGenerator _gridGenerator;
 

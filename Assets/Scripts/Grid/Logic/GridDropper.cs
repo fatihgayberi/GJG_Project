@@ -52,6 +52,8 @@ namespace GJG.GridSystem
             // degisiklik yapilan sutunlari tek tek geziyoruz
             foreach (var columnIndex in droppedColumns)
             {
+                bool hasObstacle = false;
+
                 // sutunda yer alan indexler
                 List<int2> itemIndexies = _gameGrid.GetColumn(columnIndex);
                 moveColumns[columnIndex].targetIndexies.Clear();
@@ -66,6 +68,11 @@ namespace GJG.GridSystem
                     {
                         // bosun ustundeki dolu indexleri alıyoruz 
                         if (_gameGrid.GetNode(new int2(itemIndex.x, j)).IsEmpty) continue;
+                        if (_gameGrid.GetItem(new int2(itemIndex.x, j)) is ItemObstacle)
+                        {
+                            hasObstacle = true;
+                            break;
+                        }
 
                         // bunlarin hareket etmesi lazim o yuzden bunlari listeye aliyoruz
                         moveColumns[columnIndex].items.Insert(columnMovingElements, _gameGrid.GetItem(new int2(itemIndex.x, j)));
@@ -97,23 +104,29 @@ namespace GJG.GridSystem
                     }
                 }
 
-                for (int i = 0; i < blastCount[columnIndex]; i++)
+                if (!hasObstacle)
                 {
-                    // bos alan sayisi doludan daha az o yuzden yukaridan item dusurecegiz
-                    ItemBlast itemBlast = _gridGenerator.GetNewItem();
+                    for (int i = 0; i < blastCount[columnIndex]; i++)
+                    {
+                        // bos alan sayisi doludan daha az o yuzden yukaridan item dusurecegiz
+                        ItemBase itemBase = _gridGenerator.GetNewItem();
 
-                    itemBlast.canMatch = false;
-                    itemBlast.CanSelect = false;
+                        if (itemBase is ItemBlast itemBlast)
+                        {
+                            itemBlast.canMatch = false;
+                            itemBlast.CanSelect = false;
 
-                    itemBlast.gameObject.SetActive(true);
+                            itemBlast.gameObject.SetActive(true);
 
-                    Vector3 startPos = _gameGrid.GetNode(moveColumns[columnIndex].targetIndexies[^1]).nodePos;
+                            Vector3 startPos = _gameGrid.GetNode(moveColumns[columnIndex].targetIndexies[^1]).nodePos;
 
-                    startPos.y += (i + 1) + 5;
+                            startPos.y += (i + 1) + 5;
 
-                    itemBlast.transform.position = startPos;
+                            itemBlast.transform.position = startPos;
 
-                    moveColumns[columnIndex].items.Add(itemBlast);
+                            moveColumns[columnIndex].items.Add(itemBlast);
+                        }
+                    }
                 }
             }
         }

@@ -12,8 +12,8 @@ namespace GJG.GridSystem
     {
         [SerializeField] private GridCoordinatData _gridCoordinatData;
         [SerializeField] private GridData _gridData;
-        [SerializeField] private Pool<ItemBlast> _itemPool;
-        [SerializeField] private Pool<ItemBlast> _obstaclePool;
+        [SerializeField] private Pool<ItemBase> _itemPool;
+        [SerializeField] private Pool<ItemBase> _obstaclePool;
 
         private GameGrid _gameGrid;
         private ItemPainter _itemPainter;
@@ -22,7 +22,7 @@ namespace GJG.GridSystem
 
         public GameGrid Grid => _gameGrid;
 
-        public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBlast> itemPool, Pool<ItemBlast> obstaclePool, ItemPainter itemPainter)
+        public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBase> itemPool, Pool<ItemBase> obstaclePool, ItemPainter itemPainter)
         {
             _gridCoordinatData = gridCoordinatData;
             _itemPainter = itemPainter;
@@ -54,7 +54,15 @@ namespace GJG.GridSystem
             {
                 for (index.y = 0; index.y < _gameGrid.ColumnLength; index.y++)
                 {
-                    item = GetNewItem();
+                    if (_gridData.ObstacleIndex.Contains(index))
+                    {
+                        item = GetNewObstacle();
+                    }
+                    else
+                    {
+                        item = GetNewItem();
+                    }
+
                     item.gameObject.SetActive(true);
 
                     itemPos.x = _gridCoordinatData.CellSize.x * index.x;
@@ -78,9 +86,9 @@ namespace GJG.GridSystem
             }
         }
 
-        public ItemBlast GetNewItem()
+        public ItemBase GetNewItem()
         {
-            ItemBlast itemBlast = _itemPool.GetPoolObject();
+            ItemBase itemBlast = _itemPool.GetPoolObject();
             itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Blast);
 
             _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Level_1);
@@ -88,9 +96,9 @@ namespace GJG.GridSystem
             return itemBlast;
         }
 
-        public ItemBlast GetNewObstacle()
+        public ItemBase GetNewObstacle()
         {
-            ItemBlast itemBlast = _obstaclePool.GetPoolObject();
+            ItemBase itemBlast = _obstaclePool.GetPoolObject();
             itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Obstacle);
 
             _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Level_1);
@@ -98,9 +106,16 @@ namespace GJG.GridSystem
             return itemBlast;
         }
 
-        public void RePoolObject(ItemBlast itemBlast)
+        public void RePoolObject(ItemBase itemBase, ItemCategoryType categoryType)
         {
-            _itemPool.RePoolObject(itemBlast);
+            if (categoryType == ItemCategoryType.Blast)
+            {
+                _itemPool.RePoolObject(itemBase);
+            }
+            else if (categoryType == ItemCategoryType.Obstacle)
+            {
+                _obstaclePool.RePoolObject(itemBase);
+            }
         }
     }
 }
