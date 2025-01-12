@@ -5,7 +5,7 @@ using Unity.Mathematics;
 namespace GJG.Items.ItemColor
 {
     [CreateAssetMenu(fileName = "ColorData", menuName = "ColorData", order = 0)]
-    public class ColorData : ScriptableObject
+    public class ItemColorData : ScriptableObject
     {
         [SerializeField] private ItemColorType itemColorType;
         [SerializeField, ColorUsage(true, true)] private Color tintColor;

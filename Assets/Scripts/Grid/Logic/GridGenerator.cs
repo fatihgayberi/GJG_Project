@@ -1,16 +1,19 @@
+using GJG.Items.ItemColor;
 using Wonnasmith.Pooling;
 using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
-using GJG.Items.ItemColor;
+using System;
 
 namespace GJG.GridSystem
 {
+    [Serializable]
     public class GridGenerator
     {
         [SerializeField] private GridCoordinatData _gridCoordinatData;
         [SerializeField] private GridData _gridData;
         [SerializeField] private Pool<ItemBlast> _itemPool;
+        [SerializeField] private Pool<ItemBlast> _obstaclePool;
 
         private GameGrid _gameGrid;
         private ItemPainter _itemPainter;
@@ -19,11 +22,12 @@ namespace GJG.GridSystem
 
         public GameGrid Grid => _gameGrid;
 
-        public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBlast> itemPool, ItemPainter itemPainter)
+        public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBlast> itemPool, Pool<ItemBlast> obstaclePool, ItemPainter itemPainter)
         {
             _gridCoordinatData = gridCoordinatData;
             _itemPainter = itemPainter;
             _itemPool = itemPool;
+            _obstaclePool = obstaclePool;
             _gridData = gridData;
 
             GridPrepare();
@@ -34,6 +38,7 @@ namespace GJG.GridSystem
         {
             // itemler icin pool generate edildi
             _itemPool.Initialize(_gridData.GridSize.x * _gridData.GridSize.y + _gridData.PoolOffset);
+            _obstaclePool.Initialize();
 
             // grid hazirlandi
             _colorGenerator = new(_gridData);
@@ -68,7 +73,7 @@ namespace GJG.GridSystem
             {
                 for (index.y = 0; index.y < _gameGrid.ColumnLength; index.y++)
                 {
-                    _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType());
+                    _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType(ItemCategoryType.Blast));
                 }
             }
         }
@@ -76,9 +81,19 @@ namespace GJG.GridSystem
         public ItemBlast GetNewItem()
         {
             ItemBlast itemBlast = _itemPool.GetPoolObject();
-            itemBlast.ColorType = _colorGenerator.GetColorType();
+            itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Blast);
 
-            _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Default);
+            _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Level_1);
+
+            return itemBlast;
+        }
+
+        public ItemBlast GetNewObstacle()
+        {
+            ItemBlast itemBlast = _obstaclePool.GetPoolObject();
+            itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Obstacle);
+
+            _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Level_1);
 
             return itemBlast;
         }

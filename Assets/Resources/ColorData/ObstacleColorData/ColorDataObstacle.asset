@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac4d3d62759f0ab43b74c3448f70ff25, type: 3}
+  m_Name: ColorDataObstacle
+  m_EditorClassIdentifier: 
+  itemColorType: 7
+  tintColor: {r: 0.2917707, g: 0.07818743, b: 0.0060488326, a: 1}
+  grayscaleIntensity: 0.19
+  brightness: -0.48
+  contrast: 1.76
+  colorLuminance:
+    x: 3.29
+    y: 3.14
+    z: 2.09
+  uVData:
+  - itemType: 1
+    uVs:
+    - x: 0
+      y: 0
+  - itemType: 2
+    uVs:
+    - x: 1
+      y: 0

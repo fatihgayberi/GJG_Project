@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ObstalceMainMaterial
+  m_Shader: {fileID: 4800000, guid: 417018c4710f9e84ba3a396d6738d682, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 6109b2bb82153c348816e2c6e0df015d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _B: 1.68
+    - _Brightness: -0.21
+    - _Column: 0
+    - _Columns: 3
+    - _Contrast: 2.1
+    - _FrameIndex: 1
+    - _G: 2.9
+    - _Glossiness: 0
+    - _GrayscaleIntensity: 0.128
+    - _Metallic: 0
+    - _R: 3.13
+    - _Row: 0
+    - _Rows: 3
+    - _X: 0
+    - _Y: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _GridSize: {r: 2, g: 1, b: 0, a: 0}
+    - _TintColor: {r: 0.3450961, g: 0.38133222, b: 0.4433962, a: 1}
+  m_BuildTextureStacks: []

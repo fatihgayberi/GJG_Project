@@ -15,21 +15,27 @@ MonoBehaviour:
   matchStrategyType: 1
   poolOffset: 30
   gridSize:
-    x: 1
+    x: 17
     y: 10
-  colorInitData:
-  - itemColorType: 1
-    initialPower: 8
-  - itemColorType: 2
-    initialPower: 2
-  - itemColorType: 3
-    initialPower: 1
-  - itemColorType: 4
-    initialPower: 1
-  - itemColorType: 5
-    initialPower: 3
-  - itemColorType: 6
-    initialPower: 1
+  gridCategoryColorData:
+  - itemCategoryType: 1
+    colorInitData:
+    - itemColorType: 1
+      initialPower: 8
+    - itemColorType: 2
+      initialPower: 2
+    - itemColorType: 3
+      initialPower: 1
+    - itemColorType: 4
+      initialPower: 1
+    - itemColorType: 5
+      initialPower: 3
+    - itemColorType: 6
+      initialPower: 1
+  - itemCategoryType: 2
+    colorInitData:
+    - itemColorType: 7
+      initialPower: 1
   groupData:
   - itemType: 2
     maxCount: 4

@@ -5,6 +5,7 @@ Shader "GJG/Surface/Item"
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
+        _GridSize ("Grid Size", Vector) = (1, 1, 1, 1)
         [PerRendererData] _GrayscaleIntensity ("Grayscale Intensity", Range(0, 1)) = 1
         [PerRendererData] _Brightness ("Brightness", Range(-10, 10)) = 0
         [PerRendererData] _Contrast ("Contrast", Range(0, 20)) = 1
@@ -45,6 +46,7 @@ Shader "GJG/Surface/Item"
 
         half _Glossiness;
         half _Metallic;
+        float4 _GridSize;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -73,7 +75,7 @@ Shader "GJG/Surface/Item"
 
         float2 GetTileUV(float2 uv, float x, float y)
         {
-            float2 tileSize = float2(1.0 / 3, 1.0 / 3);
+            float2 tileSize = float2(1.0 / _GridSize.x, 1.0 / _GridSize.y);
             float2 tileOffset = float2(x * tileSize.x, y * tileSize.y);
             return uv * tileSize + tileOffset;
         }

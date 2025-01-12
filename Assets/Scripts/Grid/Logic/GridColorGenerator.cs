@@ -2,42 +2,62 @@ using System.Collections.Generic;
 using Wonnasmith.Extensions;
 using GJG.Items;
 using System;
+using UnityEngine;
 
 namespace GJG.GridSystem
 {
     [Serializable]
     public class GridColorGenerator
     {
-        private int _colorTypeIndex;
-        private List<ItemColorType> _colorTypes;
+        private Dictionary<ItemCategoryType, ColorPower> _colorCategories;
+
+        private class ColorPower
+        {
+            public List<ItemColorType> colorTypes = new();
+            public int colorTypeIndex;
+        }
 
         public GridColorGenerator(GridData gridData)
         {
             // bir listeye power kadar ekleyip shuffle yapip yapip kullaniyoruz ki random kontrollu gelsin
-            _colorTypes = new();
+            _colorCategories = new();
 
-            foreach (var colorInitData in gridData.ColorInitDatas)
+            foreach (var category in gridData.GridCategoryColorDatas)
             {
-                for (int i = 0; i < colorInitData.InitialPower; i++)
+                _colorCategories.Add(category.ItemCategoryType, new());
+
+                foreach (var initData in category.ColorInitDatas)
                 {
-                    _colorTypes.Add(colorInitData.ItemColorType);
+                    ColorPowerGenerator(_colorCategories[category.ItemCategoryType], initData);
                 }
             }
-
-            _colorTypes.Shuffle();
         }
 
-        public ItemColorType GetColorType()
+        private ColorPower ColorPowerGenerator(ColorPower colorPower, GridData.ColorInitData colorInitData)
         {
-            _colorTypeIndex++;
-
-            if (_colorTypeIndex >= _colorTypes.Count)
+            for (int i = 0; i < colorInitData.InitialPower; i++)
             {
-                _colorTypeIndex = 0;
-                _colorTypes.Shuffle();
+                colorPower.colorTypes.Add(colorInitData.ItemColorType);
             }
 
-            return _colorTypes[_colorTypeIndex];
+            colorPower.colorTypes.Shuffle();
+
+            return colorPower;
+        }
+
+        public ItemColorType GetColorType(ItemCategoryType itemCategoryType)
+        {
+            ColorPower colorPower = _colorCategories[itemCategoryType];
+
+            colorPower.colorTypeIndex++;
+
+            if (colorPower.colorTypeIndex >= colorPower.colorTypes.Count)
+            {
+                colorPower.colorTypeIndex = 0;
+                colorPower.colorTypes.Shuffle();
+            }
+
+            return colorPower.colorTypes[colorPower.colorTypeIndex];
         }
     }
 }

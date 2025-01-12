@@ -490,8 +490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7737cf043a7fd21419e55390afca5162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  painterData:
-    itemPrefab: {fileID: 3057287102824406536, guid: 3416a4690940f9647808b55d11427934, type: 3}
+  painterDatas:
+  - itemPrefab: {fileID: 3057287102824406536, guid: 3416a4690940f9647808b55d11427934, type: 3}
     propertyDatas:
     - colorData: {fileID: 11400000, guid: b44d8b2b1ecf8bf4296d0efda27bc950, type: 2}
     - colorData: {fileID: 11400000, guid: b92198ca19e9f6f459334538709fc207, type: 2}
@@ -499,6 +499,9 @@ MonoBehaviour:
     - colorData: {fileID: 11400000, guid: 7d4f72207c5530e409d517b4f22e1b79, type: 2}
     - colorData: {fileID: 11400000, guid: fccd3ba86082ace4298265e8ec476c19, type: 2}
     - colorData: {fileID: 11400000, guid: d96ccf6f2e15d0646af59f372a262077, type: 2}
+  - itemPrefab: {fileID: 3057287102824406536, guid: d9c3aaa6bd99c7b45bf1f9dbbb0f73f5, type: 3}
+    propertyDatas:
+    - colorData: {fileID: 11400000, guid: 99275f8c405db63459d0a527bf5870c2, type: 2}
 --- !u!1 &1022891670
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,3 +599,7 @@ MonoBehaviour:
     poolableData:
       poolPrefab: {fileID: 830757175113513656, guid: 3416a4690940f9647808b55d11427934, type: 3}
       poolCount: 60
+  _obstaclePool:
+    poolableData:
+      poolPrefab: {fileID: 830757175113513656, guid: d9c3aaa6bd99c7b45bf1f9dbbb0f73f5, type: 3}
+      poolCount: 5

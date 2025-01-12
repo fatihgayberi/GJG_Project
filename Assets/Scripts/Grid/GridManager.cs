@@ -13,6 +13,7 @@ namespace GJG.GridSystem
         [SerializeField] private GridCoordinatData gridCoordinatData;
         [SerializeField] private GridData gridData;
         [SerializeField] private Pool<ItemBlast> itemPool;
+        [SerializeField] private Pool<ItemBlast> _obstaclePool;
 
         private GridGenerator _gridGenerator;
 
@@ -22,9 +23,9 @@ namespace GJG.GridSystem
         {
             // boyama icin hazirlik yapildi
             itemPainter.Initialize();
-            
+
             // grid uretildi
-            _gridGenerator = new GridGenerator(gridCoordinatData, gridData, itemPool, itemPainter);
+            _gridGenerator = new GridGenerator(gridCoordinatData, gridData, itemPool, _obstaclePool, itemPainter);
 
             // grid gruplama hazirlandi
             _groupChecker = new GroupChecker(_gridGenerator.Grid, gridData, itemPainter);

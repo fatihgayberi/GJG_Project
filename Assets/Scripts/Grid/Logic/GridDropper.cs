@@ -80,6 +80,8 @@ namespace GJG.GridSystem
                         }
 
                         _gameGrid.RemoveItem(new int2(itemIndex.x, j));
+                        _groupChecker.CheckJustItem(new int2(itemIndex.x - 1, j));
+                        _groupChecker.CheckJustItem(new int2(itemIndex.x + 1, j));
                     }
 
                     break;

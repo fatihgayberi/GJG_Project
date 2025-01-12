@@ -64,6 +64,8 @@ namespace GJG.GridSystem
 
         public void CheckJustItem(int2 index)
         {
+            if (!_gameGrid.IsValidIndex(index)) return;
+
             _toRemove = _matchStrategy.Strategy.GetMatchesItem(index);
 
             foreach (int2 removeIndex in _toRemove)
@@ -83,7 +85,7 @@ namespace GJG.GridSystem
             }
 
             // hicbirinden buyuk olmadigi icin default u return ettik
-            return ItemType.Default;
+            return ItemType.Level_1;
         }
     }
 }

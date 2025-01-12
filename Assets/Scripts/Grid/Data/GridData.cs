@@ -12,14 +12,16 @@ namespace GJG.GridSystem
         [SerializeField] private MatchStrategyType matchStrategyType;
         [SerializeField] private int poolOffset;
         [SerializeField, Tooltip("M - N")] private int2 gridSize; // M N
-        [SerializeField, Tooltip("K")] private ColorInitData[] colorInitData; // K
+        // [SerializeField, Tooltip("K")] private ColorInitData[] colorInitData; // K
+        [SerializeField, Tooltip("K")] private GridCategoryColorData[] gridCategoryColorData; // K
         [SerializeField, Tooltip("A - B - C ...")] private GroupData[] groupData; // A - B - C ...
 
         public MatchStrategyType MatchStrategyType => matchStrategyType;
         public int2 GridSize => gridSize;
         public int PoolOffset => poolOffset;
         public GroupData[] GroupDatas => groupData;
-        public ColorInitData[] ColorInitDatas => colorInitData;
+        // public ColorInitData[] ColorInitDatas => colorInitData;
+        public GridCategoryColorData[] GridCategoryColorDatas => gridCategoryColorData;
 
 
         [Serializable]
@@ -33,6 +35,16 @@ namespace GJG.GridSystem
         }
 
         [Serializable]
+        public class GridCategoryColorData
+        {
+            [SerializeField] private ItemCategoryType itemCategoryType;
+            [SerializeField] private ColorInitData[] colorInitData;
+
+            public ItemCategoryType ItemCategoryType => itemCategoryType;
+            public ColorInitData[] ColorInitDatas => colorInitData;
+        }
+
+        [Serializable]
         public class ColorInitData
         {
             [SerializeField] private ItemColorType itemColorType;
@@ -41,5 +53,6 @@ namespace GJG.GridSystem
             public ItemColorType ItemColorType => itemColorType;
             public int InitialPower => initialPower;
         }
+
     }
 }

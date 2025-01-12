@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using Unity.Mathematics;
 using UnityEngine;
 using System;
 
@@ -18,41 +17,37 @@ namespace GJG.Items.ItemColor
         [Serializable]
         private class PropertyData
         {
-            public ColorData colorData;
+            public ItemColorData colorData;
             [HideInInspector] public MaterialPropertyBlock materialPropertyBlock;
         }
 
-        [SerializeField] private PainterData painterData;
+        // [SerializeField] private PainterData painterData;
+        [SerializeField] private PainterData[] painterDatas;
 
         private Dictionary<ItemColorType, PropertyData> _propertyDataDictionary = new();
 
         public void Initialize()
         {
-            foreach (PropertyData data in painterData.propertyDatas)
+            foreach (PainterData painterData in painterDatas)
             {
-                // daha sonradan hizli search yapabilmek icin dictionarye tasidik datayi, cunku inspectorden direkt verilmiyordu
-                _propertyDataDictionary.Add(data.colorData.ItemColorType, data);
+                foreach (PropertyData data in painterData.propertyDatas)
+                {
+                    // daha sonradan hizli search yapabilmek icin dictionarye tasidik datayi, cunku inspectorden direkt verilmiyordu
+                    _propertyDataDictionary.Add(data.colorData.ItemColorType, data);
 
-                // propertyBlocklari initialize ettik 
-                PropertyDataInitializer(data);
+                    // propertyBlocklari initialize ettik 
+                    PropertyDataInitializer(data);
+                }
             }
-        }
-
-        public void Paint(IPaintable paintable, ItemColorType colorType, int2 uv)
-        {
-            // dictionary kullandigim icin datayi cashlemedim cunku burasi surekli calisacak O(1)
-
-            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, uv.y);
-            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, uv.x);
-
-            paintable.Renderer.SetPropertyBlock(GetPropertyData(colorType)?.materialPropertyBlock);
         }
 
         public void Paint(IPaintable paintable, ItemColorType colorType, ItemType itemType)
         {
-            // dictionary kullandigim icin datayi cashlemedim cunku burasi surekli calisacak O(1)
+            // dictionary kullandigim icin dataya erisim O(1)
+            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, GetPropertyData(colorType).colorData.GetUV(itemType).y);
+            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, GetPropertyData(colorType).colorData.GetUV(itemType).x);
 
-            Paint(paintable, colorType, GetPropertyData(colorType).colorData.GetUV(itemType));
+            paintable.Renderer.SetPropertyBlock(GetPropertyData(colorType)?.materialPropertyBlock);
         }
 
         private PropertyData GetPropertyData(ItemColorType itemColorType)
@@ -67,8 +62,11 @@ namespace GJG.Items.ItemColor
         {
             propertyData.materialPropertyBlock = new();
 
-            // property blocklari her udpate islemi icin const degerleri bunlar olacagi icin bunları cashledik
-            painterData.itemPrefab.Renderer.GetPropertyBlock(propertyData.materialPropertyBlock);
+            foreach (PainterData painterData in painterDatas)
+            {
+                // property blocklari her udpate islemi icin const degerleri bunlar olacagi icin bunları cashledik
+                painterData.itemPrefab.Renderer.GetPropertyBlock(propertyData.materialPropertyBlock);
+            }
 
             propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.GrayscaleIntensity, propertyData.colorData.GrayscaleIntensity);
             propertyData.materialPropertyBlock.SetFloat(ShaderPopertyIDData.Brightness, propertyData.colorData.Brightness);
