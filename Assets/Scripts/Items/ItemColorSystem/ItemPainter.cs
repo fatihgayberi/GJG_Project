@@ -40,13 +40,13 @@ namespace GJG.Items.ItemColor
             }
         }
 
-        public void Paint(IPaintable paintable, ItemColorType colorType, int itemType)
+        public void Paint(IPaintable paintable, int itemType)
         {
             // dictionary kullandigim icin dataya erisim O(1)
-            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, GetPropertyData(colorType).colorData.GetUV(itemType).y);
-            GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, GetPropertyData(colorType).colorData.GetUV(itemType).x);
+            GetPropertyData(paintable.ColorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, GetPropertyData(paintable.ColorType).colorData.GetUV(itemType).y);
+            GetPropertyData(paintable.ColorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Column, GetPropertyData(paintable.ColorType).colorData.GetUV(itemType).x);
 
-            paintable.Renderer.SetPropertyBlock(GetPropertyData(colorType)?.materialPropertyBlock);
+            paintable.Renderer.SetPropertyBlock(GetPropertyData(paintable.ColorType)?.materialPropertyBlock);
         }
 
         private PropertyData GetPropertyData(ItemColorType itemColorType)

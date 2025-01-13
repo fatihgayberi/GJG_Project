@@ -4,13 +4,11 @@ using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
 using System;
-using System.Linq;
-using UnityEngine.Rendering;
 
 namespace GJG.GridSystem
 {
     [Serializable]
-    class GridDropper
+    public class GridDropper
     {
         private GameGrid _gameGrid;
         private GroupChecker _groupChecker;
@@ -30,8 +28,78 @@ namespace GJG.GridSystem
 
         // column - MoveColumns
 
+        [Serializable]
+        public class DictionaryPairTest
+        {
+            public int Key;
+            public List<MoveColumns> Value;
+        }
+
+        [Serializable]
+        public class DictionaryTest
+        {
+            public List<DictionaryPairTest> pairList = new();
+
+            public int Count => pairList.Count;
+
+            public void Add(int key, List<MoveColumns> Value)
+            {
+                if (Get(key) != null)
+                {
+                    Debug.LogError("icinde var");
+                    return;
+                }
+
+                DictionaryPairTest dictionaryPairTest = new();
+                dictionaryPairTest.Key = key;
+                dictionaryPairTest.Value = Value;
+                pairList.Add(dictionaryPairTest);
+            }
+
+            public void Remove(int key)
+            {
+                if (Get(key) == null)
+                {
+                    Debug.LogError("icinde yok");
+                    return;
+                }
+
+                pairList.RemoveAt(key);
+            }
+
+            public void Clear()
+            {
+                pairList.Clear();
+            }
+
+            public DictionaryTest ToCopy()
+            {
+                List<DictionaryPairTest> copyPair = new(pairList);
+                DictionaryTest copyDictionary = new DictionaryTest();
+
+                copyDictionary.pairList = copyPair;
+
+                return copyDictionary;
+            }
+
+            public DictionaryPairTest Get(int i)
+            {
+                foreach (var item in pairList)
+                {
+                    if (item.Key == i)
+                    {
+                        return item;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        public DictionaryTest moveColumnDictionaryForTest = new();
+
         [SerializeField]
-        public Dictionary<int, List<MoveColumns>> moveColumnDictionary = new();
+        // public Dictionary<int, List<MoveColumns>> moveColumnDictionary = new();
 
         public GridDropper(GameGrid gameGrid, GroupChecker groupChecker, GridGenerator gridGenerator)
         {
@@ -50,15 +118,20 @@ namespace GJG.GridSystem
         private void InitMoveCollumsDictionary()
         {
             Debug.Log("InitMoveCollumsDictionary");
-            var tmp = new Dictionary<int, List<MoveColumns>>(moveColumnDictionary);
-            moveColumnDictionary.Clear();
+            // var tmp = new Dictionary<int, List<MoveColumns>>(moveColumnDictionary);
+            var tmp = moveColumnDictionaryForTest.ToCopy();
+
+            // moveColumnDictionary.Clear();
+            moveColumnDictionaryForTest.Clear();
 
             for (int i = 0; i < _rowLength; i++)
             {
-                moveColumnDictionary.Add(i, new());
+                // moveColumnDictionary.Add(i, new());
+                moveColumnDictionaryForTest.Add(i, new());
 
                 MoveColumns moveColumn = new();
-                moveColumnDictionary[i].Add(moveColumn);
+                // moveColumnDictionary[i].Add(moveColumn);
+                moveColumnDictionaryForTest.Get(i).Value.Add(moveColumn);
 
                 List<int2> itemIndexies = _gameGrid.GetColumn(i);
 
@@ -70,7 +143,8 @@ namespace GJG.GridSystem
                     if (itemBase is ItemObstacle)
                     {
                         moveColumn = new();
-                        moveColumnDictionary[i].Add(moveColumn);
+                        // moveColumnDictionary[i].Add(moveColumn);
+                        moveColumnDictionaryForTest.Get(i).Value.Add(moveColumn);
                     }
                     else
                     {
@@ -80,12 +154,14 @@ namespace GJG.GridSystem
 
                 if (tmp.Count > 0)
                 {
-                    var oldColums = tmp[i];
-                    var newColums = moveColumnDictionary[i];
+                    // var oldColums = tmp[i];
+                    DictionaryPairTest oldColums = tmp.Get(i);
+                    // var newColums = moveColumnDictionary[i];
+                    DictionaryPairTest newColums = moveColumnDictionaryForTest.Get(i);
 
-                    foreach (var oldColum in oldColums)
+                    foreach (var oldColum in oldColums.Value)
                     {
-                        foreach (var newColum in newColums)
+                        foreach (var newColum in newColums.Value)
                         {
                             if (oldColum.nodes.Count is 0) continue;
                             if (newColum.nodes.Contains(oldColum.nodes[0]))
@@ -112,24 +188,22 @@ namespace GJG.GridSystem
             foreach (var columnIndex in droppedColumns)
             {
                 // sutunda yer alan indexler
-                // moveColumns[columnIndex].targetIndexies.Clear();
-                // moveColumnDictionary.Clear();
 
-                // index_1 - obstacle arasi satirlar
-                var columnInColumn = moveColumnDictionary[columnIndex];
+                // var columnInColumn = moveColumnDictionary[columnIndex];
+                DictionaryPairTest columnInColumn = moveColumnDictionaryForTest.Get(columnIndex);
 
-                for (int i = 0; i < columnInColumn.Count; i++)
+                for (int i = 0; i < columnInColumn.Value.Count; i++)
                 {
-                    var column = columnInColumn[i];
+                    var column = columnInColumn.Value[i];
                     column.targetIndexies.Clear();
-                    
+
                     // griddeki itemleri kontrol eder
                     InGridCheck(column);
 
                     // target indexleri bulur
                     FindTargetIndex(column);
 
-                    if (i == columnInColumn.Count - 1)
+                    if (i == columnInColumn.Value.Count - 1)
                     {
                         int blastedInThisColumn = 0;
                         var blatsObjects = blastCount[columnIndex];
@@ -144,19 +218,10 @@ namespace GJG.GridSystem
 
                         if (blastedInThisColumn > 0)
                         {
-                            DropNewItemCheck(columnInColumn[i].targetIndexies.Count - columnInColumn[i].items.Count, columnInColumn[i]);
+                            DropNewItemCheck(column.targetIndexies.Count - column.items.Count, column);
                         }
                     }
                 }
-
-                // griddeki itemleri kontrol eder
-                // InGridCheck(itemIndexies, columnIndex);
-
-                // target indexleri bulur
-                // FindTargetIndex(itemIndexies, columnIndex);
-
-                // yeni item gonderir
-                // DropNewItemCheck(blastCount[columnIndex], columnIndex);
             }
         }
 
@@ -196,7 +261,8 @@ namespace GJG.GridSystem
         }
 
         private void FindTargetIndex(MoveColumns moveColumns)
-        {                // butun sutunu geziyoruz
+        {
+            // butun sutunu geziyoruz
             foreach (var itemIndex in moveColumns.nodes)
             {
                 // burada item yok
@@ -234,36 +300,53 @@ namespace GJG.GridSystem
 
         private async UniTaskVoid Move()
         {
+            Vector3 targetPos;
+            int2 targetIndex;
+            ItemBase currentItemBase;
+            DictionaryPairTest moveColumnPair;
+            MoveColumns moveColumn;
+
             while (true)
             {
                 await UniTask.Yield();
 
-                // i sutun indexi demek 
-                foreach (var moveColumnPair in moveColumnDictionary)
+                // sutunlar listesi
+                for (int i = 0; i < moveColumnDictionaryForTest.pairList.Count; i++)
                 {
-                    foreach (var moveColumn in moveColumnPair.Value)
+                    moveColumnPair = moveColumnDictionaryForTest.pairList[i];
+
+                    // sutun icindeki sutunlar listesi
+                    for (int j = 0; j < moveColumnPair.Value.Count; j++)
                     {
-                        for (int j = 0; j < moveColumn.items.Count; j++)
+                        moveColumn = moveColumnPair.Value[j];
+
+                        for (int k = 0; k < moveColumn.items.Count; k++)
                         {
-                            int2 target = moveColumn.targetIndexies[j];
-
-                            moveColumn.items[j].transform.position = Vector3.MoveTowards(
-                                moveColumn.items[j].transform.position,
-                                _gameGrid.GetNode(target).nodePos, 5 * Time.deltaTime);
-
-                            if (moveColumn.items[j].transform.position == _gameGrid.GetNode(target).nodePos)
+                            if (moveColumn.targetIndexies.Count <= k)
                             {
-                                if (moveColumn.items[j] is ItemBlast itemBlast)
+                                Debug.Log("ERROR" + new int3(i, j, k));
+                            }
+                            if (0 > k) continue;
+
+                            targetIndex = moveColumn.targetIndexies[k];
+                            targetPos = _gameGrid.GetNode(targetIndex).nodePos;
+                            currentItemBase = moveColumn.items[k];
+
+                            currentItemBase.transform.position = Vector3.MoveTowards(currentItemBase.transform.position, targetPos, 5 * Time.deltaTime);
+
+                            if (currentItemBase.transform.position == targetPos)
+                            {
+                                if (currentItemBase is ItemBlast itemBlast)
                                 {
                                     itemBlast.CanMatch = true;
                                     itemBlast.CanSelect = true;
 
-                                    _gameGrid.AddItem(target, itemBlast, _gameGrid.GetNode(target).nodePos);
-                                    _groupChecker.CheckJustItem(target);
+                                    _gameGrid.AddItem(targetIndex, itemBlast, targetPos);
+                                    _groupChecker.CheckJustItem(targetIndex);
 
-                                    moveColumn.items.RemoveAt(j);
-                                    moveColumn.targetIndexies.RemoveAt(j);
-                                    j--;
+                                    moveColumn.items.RemoveAt(k);
+                                    moveColumn.targetIndexies.RemoveAt(k);
+                                    k--;
                                 }
                             }
                         }

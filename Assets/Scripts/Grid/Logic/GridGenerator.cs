@@ -88,7 +88,7 @@ namespace GJG.GridSystem
             ItemBase itemBlast = _itemPool.GetPoolObject();
             itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Blast);
 
-            _itemPainter.Paint(itemBlast, itemBlast.ColorType, (int)ItemType.Default);
+            _itemPainter.Paint(itemBlast, (int)ItemType.Default);
 
             return itemBlast;
         }
@@ -100,7 +100,7 @@ namespace GJG.GridSystem
 
             if (itemBlast is IBreakableItem breakableItem)
             {
-                _itemPainter.Paint(itemBlast, itemBlast.ColorType, breakableItem.Health);
+                _itemPainter.Paint(itemBlast, breakableItem.Health);
             }
 
             return itemBlast;

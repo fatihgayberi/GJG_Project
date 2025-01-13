@@ -4,10 +4,9 @@ using Unity.Mathematics;
 using GJG.GridSystem;
 using GJG.GJGInput;
 using UnityEngine;
+using GJG.Global;
 using GJG.Items;
 using System;
-using System.Linq;
-using GJG.Global;
 
 namespace GJG.BlastSystem
 {
@@ -16,7 +15,7 @@ namespace GJG.BlastSystem
     {
         private MatchStrategy _matchStrategy;
         private GameGrid _gameGrid;
-        private GridDropper _gridDropper;
+        public GridDropper _gridDropper;
         private GridGenerator _gridGenerator;
 
         private Vector3 _worldPosition;
@@ -82,7 +81,7 @@ namespace GJG.BlastSystem
                     if (_gameGrid.GetItem(matchsIndex + neighbourIndex) is not ItemObstacle obstacle) continue;
 
                     obstacle.health--;
-                    _gridGenerator.ItemPainter.Paint(obstacle, ItemColorType.Brown, obstacle.health);
+                    _gridGenerator.ItemPainter.Paint(obstacle, obstacle.health);
 
                     if (obstacle.health <= 0)
                     {

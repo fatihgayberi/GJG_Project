@@ -52,17 +52,17 @@ MonoBehaviour:
   - itemCategoryType: 1
     colorInitData:
     - itemColorType: 1
-      initialPower: 2
+      initialPower: 1
     - itemColorType: 2
-      initialPower: 3
+      initialPower: 0
     - itemColorType: 3
       initialPower: 1
     - itemColorType: 4
-      initialPower: 2
+      initialPower: 0
     - itemColorType: 5
-      initialPower: 1
+      initialPower: 0
     - itemColorType: 6
-      initialPower: 2
+      initialPower: 0
   - itemCategoryType: 2
     colorInitData:
     - itemColorType: 7

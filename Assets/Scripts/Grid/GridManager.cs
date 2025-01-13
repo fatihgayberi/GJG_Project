@@ -9,7 +9,6 @@ namespace GJG.GridSystem
     public class GridManager : MonoBehaviour
     {
         [SerializeField] private ItemPainter itemPainter;
-        [SerializeField] private BlastManager blastManager;
         [SerializeField] private GridCoordinatData gridCoordinatData;
         [SerializeField] private GridData gridData;
         [SerializeField] private Pool<ItemBase> itemPool;
@@ -18,6 +17,7 @@ namespace GJG.GridSystem
         private GridGenerator _gridGenerator;
 
         private GroupChecker _groupChecker;
+        public Blast _blast;
 
         private void Start()
         {
@@ -34,7 +34,7 @@ namespace GJG.GridSystem
             _groupChecker.CheckAllGrid();
 
             // patlatma islemlerine hazirlandi
-            blastManager.Initialize(_gridGenerator.Grid, gridData, _groupChecker, _gridGenerator);
+            _blast = new Blast(_gridGenerator.Grid, gridData, _groupChecker, _gridGenerator);
         }
 
         [ContextMenu("RefreshGrid")]
