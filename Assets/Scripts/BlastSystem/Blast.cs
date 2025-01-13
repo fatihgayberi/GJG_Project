@@ -6,6 +6,7 @@ using GJG.GJGInput;
 using UnityEngine;
 using GJG.Items;
 using System;
+using System.Linq;
 
 namespace GJG.BlastSystem
 {
@@ -55,10 +56,11 @@ namespace GJG.BlastSystem
 
             HashSet<int2> matchsItem = _matchStrategy.Strategy.GetMatchesItem(itemIndex);
 
-            matchsItem.UnionWith(ObstacleBlastCheck(matchsItem));
+            var obstacleBlast = ObstacleBlastCheck(matchsItem);
+            matchsItem.UnionWith(obstacleBlast);
 
             HashSet<int> dropedColumn = new();
-            Dictionary<int, int> dropedRow = new();
+            Dictionary<int, List<int2>> dropedRow = new();
 
             foreach (var matchsItemIndex in matchsItem)
             {
@@ -74,18 +76,18 @@ namespace GJG.BlastSystem
                     _gridGenerator.RePoolObject(itemObstacle, ItemCategoryType.Obstacle);
                 }
 
-                dropedRow.TryAdd(matchsItemIndex.x, 0);
-                ++dropedRow[matchsItemIndex.x];
+                dropedRow.TryAdd(matchsItemIndex.x, new List<int2>());
+                dropedRow[matchsItemIndex.x].Add(matchsItemIndex);
 
                 dropedColumn.Add(matchsItemIndex.x);
             }
 
-            _gridDropper.Drop(dropedColumn, dropedRow);
+            _gridDropper.Drop(dropedColumn, dropedRow, obstacleBlast.Count > 0);
         }
 
         private HashSet<int2> ObstacleBlastCheck(HashSet<int2> matchsItem)
         {
-            HashSet<int2> neighBours = new();
+            List<int2> neighBours = new();
             HashSet<int2> blastObstacleIndex = new();
 
             foreach (var matchsIndex in matchsItem)

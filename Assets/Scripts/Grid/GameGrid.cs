@@ -40,11 +40,17 @@ namespace GJG.GridSystem
         /// <summary> verilen indexteki sutunu get eder </summary>
         public List<int2> GetColumn(int rowIndex, int firstColumnIndex = 0)
         {
+            return GetColumn(rowIndex, _grid.GetLength(1), firstColumnIndex);
+        }
+
+        /// <summary> verilen indexler arasi sutunu get eder </summary>
+        public List<int2> GetColumn(int rowIndex, int endColumnIndex, int firstColumnIndex = 0)
+        {
             _indexContainer.Clear();
 
             int2 selectIndex = new(rowIndex, firstColumnIndex);
 
-            for (; selectIndex.y < _grid.GetLength(1); selectIndex.y++)
+            for (; selectIndex.y < endColumnIndex; selectIndex.y++)
             {
                 _indexContainer.Add(selectIndex);
             }

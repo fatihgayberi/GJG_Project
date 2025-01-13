@@ -13,14 +13,10 @@ MonoBehaviour:
   m_Name: GridData
   m_EditorClassIdentifier: 
   obstacleIndex:
-  - x: 4
-    y: 4
-  - x: 5
-    y: 4
-  - x: 6
-    y: 4
-  - x: 7
-    y: 4
+  - x: 1
+    y: 2
+  - x: 1
+    y: 6
   matchStrategyType: 1
   poolOffset: 30
   gridSize:
