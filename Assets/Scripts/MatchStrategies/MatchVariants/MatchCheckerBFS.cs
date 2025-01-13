@@ -15,7 +15,8 @@ namespace GJG.GridSystem.Match
 
         public override HashSet<int2> GetMatchesItem(int2 selectItemIndex)
         {
-            selectedItem = _grid.GetNode(selectItemIndex).ItemBase;
+            selectedItem = _grid.GetItem(selectItemIndex);
+            if (selectedItem == null) return null;
 
             _queue.Clear();
             _toRemove.Clear();

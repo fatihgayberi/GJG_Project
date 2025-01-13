@@ -60,14 +60,7 @@ namespace GJG.BlastSystem
                 _gameGrid.GetItem(matchsItemIndex).gameObject.SetActive(false);
                 _gameGrid.RemoveItem(matchsItemIndex);
 
-                if (_gameGrid.GetItem(matchsItemIndex) is ItemBlast itemBlast)
-                {
-                    _gridGenerator.RePoolObject(itemBlast, ItemCategoryType.Blast);
-                }
-                else if (_gameGrid.GetItem(matchsItemIndex) is ItemObstacle itemObstacle)
-                {
-                    _gridGenerator.RePoolObject(itemObstacle, ItemCategoryType.Obstacle);
-                }
+                _gridGenerator.RePoolObject(_gameGrid.GetItem(matchsItemIndex));
 
                 dropedRow.TryAdd(matchsItemIndex.x, new List<int2>());
                 dropedRow[matchsItemIndex.x].Add(matchsItemIndex);

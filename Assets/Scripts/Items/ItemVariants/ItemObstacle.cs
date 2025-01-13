@@ -1,7 +1,11 @@
+using UnityEngine;
+
 namespace GJG.Items
 {
-    public class ItemObstacle : ItemBase
+    public class ItemObstacle : ItemBase, IBreakableItem
     {
-        public int health = 2;
+        [SerializeField] public int health = 2;
+
+        public int Health { get => health; set => health = value; }
     }
 }

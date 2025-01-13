@@ -55,14 +55,7 @@ namespace GJG.GridSystem
             {
                 for (index.y = 0; index.y < _gameGrid.ColumnLength; index.y++)
                 {
-                    if (_gridData.ObstacleIndex.Contains(index))
-                    {
-                        item = GetNewObstacle();
-                    }
-                    else
-                    {
-                        item = GetNewItem();
-                    }
+                    item = _gridData.ObstacleIndex.Contains(index) ? GetNewObstacle() : GetNewItem();
 
                     item.gameObject.SetActive(true);
 
@@ -105,21 +98,23 @@ namespace GJG.GridSystem
             ItemBase itemBlast = _obstaclePool.GetPoolObject();
             itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Obstacle);
 
-            if (itemBlast is ItemObstacle itemObstacle)
+            if (itemBlast is IBreakableItem breakableItem)
             {
-                _itemPainter.Paint(itemBlast, itemBlast.ColorType, itemObstacle.health);
+                _itemPainter.Paint(itemBlast, itemBlast.ColorType, breakableItem.Health);
             }
 
             return itemBlast;
         }
 
-        public void RePoolObject(ItemBase itemBase, ItemCategoryType categoryType)
+        public void RePoolObject(ItemBase itemBase)
         {
-            if (categoryType == ItemCategoryType.Blast)
+            if (itemBase == null) return;
+
+            if (itemBase.ItemCategory == ItemCategoryType.Blast)
             {
                 _itemPool.RePoolObject(itemBase);
             }
-            else if (categoryType == ItemCategoryType.Obstacle)
+            else if (itemBase.ItemCategory == ItemCategoryType.Obstacle)
             {
                 _obstaclePool.RePoolObject(itemBase);
             }

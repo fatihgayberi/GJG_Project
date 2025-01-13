@@ -21,7 +21,6 @@ namespace GJG.Items.ItemColor
             [HideInInspector] public MaterialPropertyBlock materialPropertyBlock;
         }
 
-        // [SerializeField] private PainterData painterData;
         [SerializeField] private PainterData[] painterDatas;
 
         private Dictionary<ItemColorType, PropertyData> _propertyDataDictionary = new();
