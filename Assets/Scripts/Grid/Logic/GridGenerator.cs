@@ -21,6 +21,7 @@ namespace GJG.GridSystem
         private int2 index;
 
         public GameGrid Grid => _gameGrid;
+        public ItemPainter ItemPainter => _itemPainter;
 
         public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBase> itemPool, Pool<ItemBase> obstaclePool, ItemPainter itemPainter)
         {
@@ -83,7 +84,7 @@ namespace GJG.GridSystem
                 {
                     if (_gameGrid.GetItem(index) is IBlastableItem)
                     {
-                       _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType(ItemCategoryType.Blast));
+                        _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType(ItemCategoryType.Blast));
                     }
                 }
             }
@@ -94,7 +95,7 @@ namespace GJG.GridSystem
             ItemBase itemBlast = _itemPool.GetPoolObject();
             itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Blast);
 
-            _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Level_1);
+            _itemPainter.Paint(itemBlast, itemBlast.ColorType, (int)ItemType.Level_1);
 
             return itemBlast;
         }
@@ -104,7 +105,10 @@ namespace GJG.GridSystem
             ItemBase itemBlast = _obstaclePool.GetPoolObject();
             itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Obstacle);
 
-            _itemPainter.Paint(itemBlast, itemBlast.ColorType, ItemType.Level_1);
+            if (itemBlast is ItemObstacle itemObstacle)
+            {
+                _itemPainter.Paint(itemBlast, itemBlast.ColorType, itemObstacle.health);
+            }
 
             return itemBlast;
         }

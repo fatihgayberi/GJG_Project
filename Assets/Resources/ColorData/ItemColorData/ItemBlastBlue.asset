@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac4d3d62759f0ab43b74c3448f70ff25, type: 3}
-  m_Name: ColorDataYellow
+  m_Script: {fileID: 11500000, guid: ef42ad9a1173a7f40b0eeb89b6cd3ebe, type: 3}
+  m_Name: ItemBlastBlue
   m_EditorClassIdentifier: 
-  itemColorType: 6
-  tintColor: {r: 1, g: 0.39215687, b: 0.003921569, a: 1}
-  grayscaleIntensity: 0.19
-  brightness: -0.48
-  contrast: 1.76
+  itemColorType: 1
+  tintColor: {r: 0, g: 0.36862746, b: 1, a: 1}
+  grayscaleIntensity: 0.128
+  brightness: -0.21
+  contrast: 2.1
   colorLuminance:
-    x: 3.29
-    y: 3.14
-    z: 2.09
+    x: 3.13
+    y: 2.9
+    z: 1.68
   uVData:
   - itemType: 2
     uVs:
@@ -36,5 +36,5 @@ MonoBehaviour:
       y: 0
   - itemType: 1
     uVs:
-    - x: 1
-      y: 2
+    - x: 2
+      y: 1

@@ -9,24 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac4d3d62759f0ab43b74c3448f70ff25, type: 3}
-  m_Name: ColorDataObstacle
+  m_Script: {fileID: 11500000, guid: b19d7daa009ed264bb450578a1f76862, type: 3}
+  m_Name: ItemObstacleBrown
   m_EditorClassIdentifier: 
   itemColorType: 7
-  tintColor: {r: 0.2917707, g: 0.07818743, b: 0.0060488326, a: 1}
-  grayscaleIntensity: 0.19
-  brightness: -0.48
-  contrast: 1.76
+  tintColor: {r: 0.5, g: 0.19130436, b: 0, a: 1}
+  grayscaleIntensity: 0.043
+  brightness: 0.52
+  contrast: 3.14
   colorLuminance:
-    x: 3.29
-    y: 3.14
-    z: 2.09
+    x: 2.18
+    y: 2.9
+    z: 1.68
   uVData:
-  - itemType: 1
+  - health: 2
     uVs:
     - x: 0
       y: 0
-  - itemType: 2
+  - health: 1
     uVs:
     - x: 1
       y: 0

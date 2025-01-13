@@ -96,6 +96,7 @@ namespace GJG.BlastSystem
                     if (_gameGrid.GetItem(matchsIndex + neighbourIndex) is not ItemObstacle obstacle) continue;
 
                     obstacle.health--;
+                    _gridGenerator.ItemPainter.Paint(obstacle, ItemColorType.Brown, obstacle.health);
 
                     if (obstacle.health <= 0)
                     {

@@ -493,15 +493,15 @@ MonoBehaviour:
   painterDatas:
   - itemPrefab: {fileID: 3057287102824406536, guid: 3416a4690940f9647808b55d11427934, type: 3}
     propertyDatas:
-    - colorData: {fileID: 11400000, guid: b44d8b2b1ecf8bf4296d0efda27bc950, type: 2}
-    - colorData: {fileID: 11400000, guid: b92198ca19e9f6f459334538709fc207, type: 2}
-    - colorData: {fileID: 11400000, guid: b07d26c31e70ca649ac57447e34ae60e, type: 2}
-    - colorData: {fileID: 11400000, guid: 7d4f72207c5530e409d517b4f22e1b79, type: 2}
-    - colorData: {fileID: 11400000, guid: fccd3ba86082ace4298265e8ec476c19, type: 2}
-    - colorData: {fileID: 11400000, guid: d96ccf6f2e15d0646af59f372a262077, type: 2}
+    - colorData: {fileID: 11400000, guid: 6e890eaf39c55c240a8b545b982b5541, type: 2}
+    - colorData: {fileID: 11400000, guid: 53e64296794569743ad3ed9adeb723ad, type: 2}
+    - colorData: {fileID: 11400000, guid: 91de14aca6b924f4ab27f337a56de0e3, type: 2}
+    - colorData: {fileID: 11400000, guid: 103bea99c9af9c249a90ebdd66ddc08b, type: 2}
+    - colorData: {fileID: 11400000, guid: 0ee79c6e51d26fe4498080a8a2c8fd59, type: 2}
+    - colorData: {fileID: 11400000, guid: aec4ffb51826d4d4694c6fd1577f9877, type: 2}
   - itemPrefab: {fileID: 328725299155325122, guid: d9c3aaa6bd99c7b45bf1f9dbbb0f73f5, type: 3}
     propertyDatas:
-    - colorData: {fileID: 11400000, guid: 99275f8c405db63459d0a527bf5870c2, type: 2}
+    - colorData: {fileID: 11400000, guid: a3945b4e188a35143887f07b4cfc837c, type: 2}
 --- !u!1 &1022891670
 GameObject:
   m_ObjectHideFlags: 0

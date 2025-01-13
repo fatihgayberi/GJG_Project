@@ -46,6 +46,10 @@ namespace GJG.GridSystem.Match
                 {
                     if (!itemBlast.canMatch) continue;
                 }
+                else
+                {
+                    continue;
+                }
 
                 if (!_grid.GetNode(_currentIndex).IsSame(selectedItem)) continue;
                 if (_toRemove.Contains(_currentIndex)) continue;

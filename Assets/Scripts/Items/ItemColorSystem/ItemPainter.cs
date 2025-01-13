@@ -41,7 +41,7 @@ namespace GJG.Items.ItemColor
             }
         }
 
-        public void Paint(IPaintable paintable, ItemColorType colorType, ItemType itemType)
+        public void Paint(IPaintable paintable, ItemColorType colorType, int itemType)
         {
             // dictionary kullandigim icin dataya erisim O(1)
             GetPropertyData(colorType)?.materialPropertyBlock.SetInt(ShaderPopertyIDData.Row, GetPropertyData(colorType).colorData.GetUV(itemType).y);
