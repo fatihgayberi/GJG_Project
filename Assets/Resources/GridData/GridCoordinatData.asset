@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GridCoordinatData
   m_EditorClassIdentifier: 
   cellSize: {x: 0.9, y: 1}
-  startPos: {x: 10, y: 0, z: 0}
+  startPos: {x: 0, y: 0, z: 0}

@@ -92,6 +92,8 @@ namespace GJG.GridSystem
 
             _toRemove = _matchStrategy.Strategy.GetMatchesItem(index);
 
+            if (_toRemove == null) return;
+
             foreach (int2 removeIndex in _toRemove)
             {
                 _painter.Paint(_gameGrid.GetItem(removeIndex), _gameGrid.GetNode(removeIndex).ItemBase.ColorType, (int)GetItemType(_toRemove.Count));

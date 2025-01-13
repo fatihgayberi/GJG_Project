@@ -122,6 +122,7 @@ namespace GJG.GridSystem
                 {
                     var column = columnInColumn[i];
                     column.targetIndexies.Clear();
+                    
                     // griddeki itemleri kontrol eder
                     InGridCheck(column);
 
@@ -130,57 +131,21 @@ namespace GJG.GridSystem
 
                     if (i == columnInColumn.Count - 1)
                     {
-                        //if (recreateGrid)
-                        //{
-                        //    bool hasObstacle = false;
-
-                        //    // baska obstacle kalmadiysa digerlerinin target indexlerini de ekle
-                        //    foreach (var nodeIndex in columnInColumn[i].nodes)
-                        //    {
-                        //        if (_gameGrid.GetItem(nodeIndex) is ItemObstacle)
-                        //        {
-                        //            hasObstacle = true;
-                        //            break;
-                        //        }
-                        //    }
-
-                        //    if (!hasObstacle)
-                        //    {
-                        //        Drop(droppedColumns, blastCount, false);
-                        //        return;
-                        //    }
-                        //}
-
-                        int belowCount = 0;
+                        int blastedInThisColumn = 0;
                         var blatsObjects = blastCount[columnIndex];
 
                         foreach (var blatsObject in blatsObjects)
                         {
                             if (column.nodes.Contains(blatsObject))
                             {
-                                ++belowCount;
+                                ++blastedInThisColumn;
                             }
                         }
 
-                        if (belowCount > 0)
+                        if (blastedInThisColumn > 0)
                         {
-                            int2 bottomIndex = new(columnIndex, columnInColumn[i].nodes[0].y - 1);
-
-                            ItemBase itembase = _gameGrid.GetItem(bottomIndex);
-
-                            if (itembase is not ItemObstacle || itembase == null)
-                            {
-                                DropNewItemCheck(columnInColumn[i].targetIndexies.Count - columnInColumn[i].items.Count, columnInColumn[i]);
-                            }
-                            else
-                            {
-                                DropNewItemCheck(belowCount, columnInColumn[i]);
-                            }
-
-                            // yeni item gonderir
-                            // DropNewItemCheck(1, columnInColumn[i]);
+                            DropNewItemCheck(columnInColumn[i].targetIndexies.Count - columnInColumn[i].items.Count, columnInColumn[i]);
                         }
-
                     }
                 }
 
