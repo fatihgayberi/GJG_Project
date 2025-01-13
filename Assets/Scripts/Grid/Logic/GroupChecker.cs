@@ -62,6 +62,30 @@ namespace GJG.GridSystem
             }
         }
 
+        public int GetActiveGroupCount()
+        {
+            int groupCount = 0;
+            _gridCheckFlag.Clear();
+
+            for (_index.x = 0; _index.x < _gridSize.x; _index.x++)
+            {
+                for (_index.y = 0; _index.y < _gridSize.y; _index.y++)
+                {
+                    // bunlar zaten daha onceden sayildigi icin atla
+                    if (_gridCheckFlag.Contains(_index)) continue;
+
+                    _toRemove = _matchStrategy.Strategy.GetMatchesItem(_index);
+
+                    if (_toRemove.Count > 0) groupCount++;
+
+                    // gruplar zaten kontrol edilerek bulundugu icin bunlari bir daha kontrol etmemek icin atliyoruz
+                    _gridCheckFlag.UnionWith(_toRemove);
+                }
+            }
+
+            return groupCount;
+        }
+
         public void CheckJustItem(int2 index)
         {
             if (!_gameGrid.IsValidIndex(index)) return;

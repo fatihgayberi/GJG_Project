@@ -81,7 +81,10 @@ namespace GJG.GridSystem
             {
                 for (index.y = 0; index.y < _gameGrid.ColumnLength; index.y++)
                 {
-                    _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType(ItemCategoryType.Blast));
+                    if (_gameGrid.GetItem(index) is IBlastableItem)
+                    {
+                       _gameGrid.UpdateNodeStatus(index, _colorGenerator.GetColorType(ItemCategoryType.Blast));
+                    }
                 }
             }
         }

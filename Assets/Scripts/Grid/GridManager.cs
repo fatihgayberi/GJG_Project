@@ -37,20 +37,11 @@ namespace GJG.GridSystem
             blastManager.Initialize(_gridGenerator.Grid, gridData, _groupChecker, _gridGenerator);
         }
 
-        public void TestUpdate()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                RefreshGrid();
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                RefreshGrid();
-            }
-        }
-
+        [ContextMenu("RefreshGrid")]
         public void RefreshGrid()
         {
+            Debug.Log("RefreshGrid()");
+
             _gridGenerator.RefreshGrid();
             _groupChecker.CheckAllGrid();
         }
