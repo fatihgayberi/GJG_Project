@@ -130,20 +130,57 @@ namespace GJG.GridSystem
 
                     if (i == columnInColumn.Count - 1)
                     {
+                        //if (recreateGrid)
+                        //{
+                        //    bool hasObstacle = false;
+
+                        //    // baska obstacle kalmadiysa digerlerinin target indexlerini de ekle
+                        //    foreach (var nodeIndex in columnInColumn[i].nodes)
+                        //    {
+                        //        if (_gameGrid.GetItem(nodeIndex) is ItemObstacle)
+                        //        {
+                        //            hasObstacle = true;
+                        //            break;
+                        //        }
+                        //    }
+
+                        //    if (!hasObstacle)
+                        //    {
+                        //        Drop(droppedColumns, blastCount, false);
+                        //        return;
+                        //    }
+                        //}
+
+                        int belowCount = 0;
                         var blatsObjects = blastCount[columnIndex];
-                        int blastObject = 0;
 
                         foreach (var blatsObject in blatsObjects)
                         {
                             if (column.nodes.Contains(blatsObject))
                             {
-                                ++blastObject;
+                                ++belowCount;
                             }
                         }
-                      
-                        // yeni item gonderir
-                        DropNewItemCheck(blastObject, columnInColumn[i]);
-                        // DropNewItemCheck(1, columnInColumn[i]);
+                        
+                        if (belowCount > 0)
+                        {
+                            int2 bottomIndex = new(columnIndex, columnInColumn[i].nodes[0].y - 1);
+
+                            ItemBase itembase = _gameGrid.GetItem(bottomIndex);
+
+                            if (itembase is not ItemObstacle || itembase == null)
+                            {
+                                DropNewItemCheck(columnInColumn[i].targetIndexies.Count - columnInColumn[i].items.Count, columnInColumn[i]);
+                            }
+                            else
+                            {
+                                DropNewItemCheck(belowCount, columnInColumn[i]);
+                            }
+
+                            // yeni item gonderir
+                            // DropNewItemCheck(1, columnInColumn[i]);
+                        }
+
                     }
                 }
 
@@ -243,16 +280,7 @@ namespace GJG.GridSystem
                     {
                         for (int j = 0; j < moveColumn.items.Count; j++)
                         {
-                            int2 target;
-                            try
-                            {
-                                target = moveColumn.targetIndexies[j];
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                                throw;
-                            }
+                            int2 target = moveColumn.targetIndexies[j];
 
                             moveColumn.items[j].transform.position = Vector3.MoveTowards(
                                 moveColumn.items[j].transform.position,

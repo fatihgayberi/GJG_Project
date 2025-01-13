@@ -20,7 +20,7 @@ namespace GJG.BlastSystem
 
         private Vector3 _worldPosition;
 
-        private static readonly int2[] _neighbourIndex = new int2[]
+        private static readonly int2[] _neighbourIndexies = new int2[]
         {
             new (1, 0),
             new (-1, 0),
@@ -67,11 +67,11 @@ namespace GJG.BlastSystem
                 _gameGrid.GetItem(matchsItemIndex).gameObject.SetActive(false);
                 _gameGrid.RemoveItem(matchsItemIndex);
 
-                if (_gameGrid.GetItem(itemIndex) is ItemBlast itemBlast)
+                if (_gameGrid.GetItem(matchsItemIndex) is ItemBlast itemBlast)
                 {
                     _gridGenerator.RePoolObject(itemBlast, ItemCategoryType.Blast);
                 }
-                else if (_gameGrid.GetItem(itemIndex) is ItemObstacle itemObstacle)
+                else if (_gameGrid.GetItem(matchsItemIndex) is ItemObstacle itemObstacle)
                 {
                     _gridGenerator.RePoolObject(itemObstacle, ItemCategoryType.Obstacle);
                 }
@@ -87,26 +87,19 @@ namespace GJG.BlastSystem
 
         private HashSet<int2> ObstacleBlastCheck(HashSet<int2> matchsItem)
         {
-            List<int2> neighBours = new();
             HashSet<int2> blastObstacleIndex = new();
 
             foreach (var matchsIndex in matchsItem)
             {
-                foreach (var item in _neighbourIndex)
+                foreach (var neighbourIndex in _neighbourIndexies)
                 {
-                    neighBours.Add(item + matchsIndex);
-                }
-            }
+                    if (_gameGrid.GetItem(matchsIndex + neighbourIndex) is not ItemObstacle obstacle) continue;
 
-            foreach (var neighbour in neighBours)
-            {
-                if (_gameGrid.GetItem(neighbour) is ItemObstacle obstacle)
-                {
                     obstacle.health--;
 
                     if (obstacle.health <= 0)
                     {
-                        blastObstacleIndex.Add(neighbour);
+                        blastObstacleIndex.Add(matchsIndex + neighbourIndex);
                     }
                 }
             }
