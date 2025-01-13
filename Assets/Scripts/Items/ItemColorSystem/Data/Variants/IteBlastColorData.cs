@@ -1,7 +1,6 @@
-using System;
 using Unity.Mathematics;
 using UnityEngine;
-
+using System;
 
 namespace GJG.Items.ItemColor
 {
@@ -9,16 +8,14 @@ namespace GJG.Items.ItemColor
     public class IteBlastColorData : ItemColorData
     {
         [Serializable]
-        public class UVData
+        public class UVDataBlast : UVData
         {
             [SerializeField] private ItemType itemType;
-            [SerializeField] private int2[] uVs;
 
             public ItemType ItemType => itemType;
-            public int2[] UVs => uVs;
         }
 
-        [SerializeField] private UVData[] uVData;
+        [SerializeField] private UVDataBlast[] uVData;
 
         public override int2 GetUV(int itemType)
         {

@@ -22,24 +22,5 @@ namespace GJG.Items.ItemColor
         public float3 ColorLuminance => colorLuminance;
 
         public abstract int2 GetUV(int itemType);
-        // {
-        //     for (int i = 0; i < uVData.Length; i++)
-        //     {
-        //         if (uVData[i].ItemType != itemType) continue;
-        //         return uVData[i].UVs[0];
-        //     }
-
-        //     return new int2(-1, -1);
-        // }
-
-        // [Serializable]
-        // public class UVData
-        // {
-        //     [SerializeField] private ItemType itemType;
-        //     [SerializeField] private int2[] uVs;
-
-        //     public ItemType ItemType => itemType;
-        //     public int2[] UVs => uVs;
-        // }
     }
 }
