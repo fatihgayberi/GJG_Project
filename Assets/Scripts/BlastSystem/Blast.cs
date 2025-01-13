@@ -7,6 +7,7 @@ using UnityEngine;
 using GJG.Items;
 using System;
 using System.Linq;
+using GJG.Global;
 
 namespace GJG.BlastSystem
 {
@@ -19,14 +20,6 @@ namespace GJG.BlastSystem
         private GridGenerator _gridGenerator;
 
         private Vector3 _worldPosition;
-
-        private static readonly int2[] _neighbourIndexies = new int2[]
-        {
-            new (1, 0),
-            new (-1, 0),
-            new (0, 1),
-            new (0, -1),
-        };
 
         public Blast(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker, GridGenerator gridGenerator)
         {
@@ -91,7 +84,7 @@ namespace GJG.BlastSystem
 
             foreach (var matchsIndex in matchsItem)
             {
-                foreach (var neighbourIndex in _neighbourIndexies)
+                foreach (var neighbourIndex in Neigbours.NeighbourIndex)
                 {
                     if (_gameGrid.GetItem(matchsIndex + neighbourIndex) is not ItemObstacle obstacle) continue;
 

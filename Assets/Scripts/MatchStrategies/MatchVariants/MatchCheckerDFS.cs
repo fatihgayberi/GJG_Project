@@ -4,26 +4,26 @@ using GJG.Global;
 
 namespace GJG.GridSystem.Match
 {
-    public class MatchCheckerBFS : MatchCheckerBase
+    public class MatchCheckerDFS : MatchCheckerBase
     {
-        private Queue<int2> _queue;
+        private Stack<int2> _stack;
 
-        public MatchCheckerBFS(GameGrid grid) : base(grid)
+        public MatchCheckerDFS(GameGrid grid) : base(grid)
         {
-            _queue = new();
+            _stack = new();
         }
 
         public override HashSet<int2> GetMatchesItem(int2 selectItemIndex)
         {
             selectedItem = _grid.GetNode(selectItemIndex).ItemBase;
 
-            _queue.Clear();
+            _stack.Clear();
             _toRemove.Clear();
-            _queue.Enqueue(selectItemIndex);
+            _stack.Push(selectItemIndex);
 
-            while (_queue.Count > 0)
+            while (_stack.Count > 0)
             {
-                _currentIndex = _queue.Dequeue();
+                _currentIndex = _stack.Pop();
 
                 if (!IsMatchable()) continue;
 
@@ -31,7 +31,7 @@ namespace GJG.GridSystem.Match
 
                 foreach (var item in Neigbours.NeighbourIndex)
                 {
-                    _queue.Enqueue(item + _currentIndex);
+                    _stack.Push(item + _currentIndex);
                 }
             }
 

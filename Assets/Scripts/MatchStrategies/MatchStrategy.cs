@@ -12,8 +12,8 @@ namespace GJG.GridSystem.Match
                 case MatchStrategyType.BFS:
                     _strategy = new MatchCheckerBFS(gameGrid);
                     break;
-                case MatchStrategyType.Iterative:
-                    _strategy = new MatchCheckerIterative(gameGrid);
+                case MatchStrategyType.DFS:
+                    _strategy = new MatchCheckerDFS(gameGrid);
                     break;
             }
         }

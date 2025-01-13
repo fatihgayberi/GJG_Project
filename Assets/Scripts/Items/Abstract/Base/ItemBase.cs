@@ -11,8 +11,6 @@ namespace GJG.Items
 
         public ItemColorType ColorType { get => _colorType; set => _colorType = value; }
 
-        public abstract void AddedGrid();
-        public abstract void RemovedGrid();
         public virtual bool IsSame(ItemBase itemBase)
         {
             return itemBase._colorType == _colorType;

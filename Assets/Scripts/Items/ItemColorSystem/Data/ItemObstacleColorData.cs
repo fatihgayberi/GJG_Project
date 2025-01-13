@@ -25,7 +25,6 @@ namespace GJG.Items.ItemColor
             for (int i = 0; i < uVData.Length; i++)
             {
                 if (uVData[i].Health != health) continue;
-                Debug.Log(health + "::uVData[i].UVs[0]::" + uVData[i].UVs[0]);
                 return uVData[i].UVs[0];
             }
 

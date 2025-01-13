@@ -5,6 +5,6 @@ namespace GJG.GridSystem.Match
         NONE = 0,
 
         BFS = 1,
-        Iterative = 2
+        DFS = 2
     }
 }

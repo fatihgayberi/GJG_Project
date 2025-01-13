@@ -14,12 +14,10 @@ namespace GJG.GridSystem
         public void AddItem(ItemBase itemBase)
         {
             _itemBase = itemBase;
-            _itemBase?.AddedGrid();
         }
 
         public void RemoveItem()
         {
-            _itemBase?.RemovedGrid();
             _itemBase = null;
         }
 

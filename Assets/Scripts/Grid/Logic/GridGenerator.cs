@@ -95,7 +95,7 @@ namespace GJG.GridSystem
             ItemBase itemBlast = _itemPool.GetPoolObject();
             itemBlast.ColorType = _colorGenerator.GetColorType(ItemCategoryType.Blast);
 
-            _itemPainter.Paint(itemBlast, itemBlast.ColorType, (int)ItemType.Level_1);
+            _itemPainter.Paint(itemBlast, itemBlast.ColorType, (int)ItemType.Default);
 
             return itemBlast;
         }

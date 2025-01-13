@@ -46,17 +46,17 @@ namespace GJG.GridSystem
 
             Move().Forget();
         }
-        
+
         private void InitMoveCollumsDictionary()
         {
             Debug.Log("InitMoveCollumsDictionary");
-            var tmp = new Dictionary<int, List<MoveColumns>> (moveColumnDictionary);
+            var tmp = new Dictionary<int, List<MoveColumns>>(moveColumnDictionary);
             moveColumnDictionary.Clear();
-            
+
             for (int i = 0; i < _rowLength; i++)
             {
                 moveColumnDictionary.Add(i, new());
-                
+
                 MoveColumns moveColumn = new();
                 moveColumnDictionary[i].Add(moveColumn);
 
@@ -82,12 +82,12 @@ namespace GJG.GridSystem
                 {
                     var oldColums = tmp[i];
                     var newColums = moveColumnDictionary[i];
-                
+
                     foreach (var oldColum in oldColums)
                     {
                         foreach (var newColum in newColums)
                         {
-                            if(oldColum.nodes.Count is 0) continue;
+                            if (oldColum.nodes.Count is 0) continue;
                             if (newColum.nodes.Contains(oldColum.nodes[0]))
                             {
                                 newColum.items.AddRange(oldColum.items);
@@ -107,14 +107,14 @@ namespace GJG.GridSystem
             {
                 InitMoveCollumsDictionary();
             }
-            
+
             // degisiklik yapilan sutunlari tek tek geziyoruz
             foreach (var columnIndex in droppedColumns)
             {
                 // sutunda yer alan indexler
                 // moveColumns[columnIndex].targetIndexies.Clear();
                 // moveColumnDictionary.Clear();
-               
+
                 // index_1 - obstacle arasi satirlar
                 var columnInColumn = moveColumnDictionary[columnIndex];
 
@@ -161,7 +161,7 @@ namespace GJG.GridSystem
                                 ++belowCount;
                             }
                         }
-                        
+
                         if (belowCount > 0)
                         {
                             int2 bottomIndex = new(columnIndex, columnInColumn[i].nodes[0].y - 1);
@@ -217,7 +217,7 @@ namespace GJG.GridSystem
                     // etkilesime girilmesin diye gridden cikariyoruz
                     if (_gameGrid.GetItem(new int2(itemIndex.x, j)) is ItemBlast itemBlast)
                     {
-                        itemBlast.canMatch = false;
+                        itemBlast.CanMatch = false;
                         itemBlast.CanSelect = false;
                     }
 
@@ -251,7 +251,7 @@ namespace GJG.GridSystem
 
                 if (itemBase is ItemBlast itemBlast)
                 {
-                    itemBlast.canMatch = false;
+                    itemBlast.CanMatch = false;
                     itemBlast.CanSelect = false;
 
                     itemBlast.gameObject.SetActive(true);
@@ -290,7 +290,7 @@ namespace GJG.GridSystem
                             {
                                 if (moveColumn.items[j] is ItemBlast itemBlast)
                                 {
-                                    itemBlast.canMatch = true;
+                                    itemBlast.CanMatch = true;
                                     itemBlast.CanSelect = true;
 
                                     _gameGrid.AddItem(target, itemBlast, _gameGrid.GetNode(target).nodePos);

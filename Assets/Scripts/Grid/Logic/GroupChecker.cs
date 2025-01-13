@@ -109,7 +109,7 @@ namespace GJG.GridSystem
             }
 
             // hicbirinden buyuk olmadigi icin default u return ettik
-            return ItemType.Level_1;
+            return ItemType.Default;
         }
     }
 }
