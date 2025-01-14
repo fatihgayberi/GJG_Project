@@ -33,7 +33,7 @@ namespace GJG.GridSystem
 
             // grup datasini cekip maxcount u buyukten kucuge dogru olacak sekilde sorting yaptik
             _groupDataList = new(_gridData.GroupDatas);
-            _groupDataList.Sort((x, y) => y.MaxCount.CompareTo(x.MaxCount));
+            _groupDataList.Sort((x, y) => y.MinCount.CompareTo(x.MinCount));
         }
 
         /// <summary> butun gridi kurallarina gore boyama yapar </summary>
@@ -106,7 +106,7 @@ namespace GJG.GridSystem
             // maxcountlara gore buyukten kucuge siraladigimiz icin grup sayisinin maxcounttan buyuk oldugu datayi bulmammiz yeterli
             for (_groupDatasIndex = 0; _groupDatasIndex < _groupDatasLength; _groupDatasIndex++)
             {
-                if (groupCount < _groupDataList[_groupDatasIndex].MaxCount) continue;
+                if (groupCount < _groupDataList[_groupDatasIndex].MinCount) continue;
                 return _groupDataList[_groupDatasIndex].ItemType;
             }
 

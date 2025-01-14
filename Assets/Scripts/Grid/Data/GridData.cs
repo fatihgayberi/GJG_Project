@@ -35,10 +35,10 @@ namespace GJG.GridSystem
         public class GroupData
         {
             [SerializeField] private ItemType itemType;
-            [SerializeField] private int maxCount;
+            [SerializeField] private int minCount;
 
             public ItemType ItemType => itemType;
-            public int MaxCount => maxCount;
+            public int MinCount => minCount;
         }
 
         [Serializable]
