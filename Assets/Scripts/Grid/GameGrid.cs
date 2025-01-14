@@ -2,15 +2,17 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
+using System;
 
 namespace GJG.GridSystem
 {
+    [Serializable]
     public class GameGrid
     {
         private GridData _gridData;
         private GridCoordinatData _gridCoordinatData;
 
-        private Node[,] _grid;
+        public Node[,] _grid;
 
         private List<int2> _indexContainer = new();
 

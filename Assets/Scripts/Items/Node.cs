@@ -1,8 +1,10 @@
 using UnityEngine;
 using GJG.Items;
+using System;
 
 namespace GJG.GridSystem
 {
+    [Serializable]
     public struct Node
     {
         private ItemBase _itemBase;

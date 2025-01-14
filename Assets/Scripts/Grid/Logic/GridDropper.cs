@@ -4,6 +4,8 @@ using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
 using System;
+using System.Reflection;
+using UnityEditor;
 
 namespace GJG.GridSystem
 {
@@ -46,7 +48,7 @@ namespace GJG.GridSystem
             {
                 if (Get(key) != null)
                 {
-                    Debug.LogError("icinde var");
+                    //Debug.LogError("icinde var");
                     return;
                 }
 
@@ -60,7 +62,7 @@ namespace GJG.GridSystem
             {
                 if (Get(key) == null)
                 {
-                    Debug.LogError("icinde yok");
+                    //Debug.LogError("icinde yok");
                     return;
                 }
 
@@ -117,7 +119,7 @@ namespace GJG.GridSystem
 
         private void InitMoveCollumsDictionary()
         {
-            Debug.Log("InitMoveCollumsDictionary");
+            //Debug.Log("InitMoveCollumsDictionary");
             // var tmp = new Dictionary<int, List<MoveColumns>>(moveColumnDictionary);
             var tmp = moveColumnDictionaryForTest.ToCopy();
 
@@ -166,6 +168,7 @@ namespace GJG.GridSystem
                             if (oldColum.nodes.Count is 0) continue;
                             if (newColum.nodes.Contains(oldColum.nodes[0]))
                             {
+                                newColum.targetIndexies.AddRange(oldColum.targetIndexies);
                                 newColum.items.AddRange(oldColum.items);
                             }
                         }
@@ -179,6 +182,22 @@ namespace GJG.GridSystem
 
         public void Drop(HashSet<int> droppedColumns, Dictionary<int, List<int2>> blastCount, bool recreateGrid = false)
         {
+            // var assembly = Assembly.GetAssembly(typeof(SceneView));
+            // var type = assembly.GetType("UnityEditor.LogEntries");
+            // var method = type.GetMethod("Clear");
+            // method.Invoke(new object(), null);
+
+            for (int i = 0; i < _gameGrid._grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < _gameGrid._grid.GetLength(1); j++)
+                {
+                    if (_gameGrid.GetNode(new int2(i, j)).IsEmpty)
+                    {
+                        //Debug.Log("AAA BOS INDEX::::" + new int2(i, j));
+                    }
+                }
+            }
+
             if (recreateGrid)
             {
                 InitMoveCollumsDictionary();
@@ -191,6 +210,8 @@ namespace GJG.GridSystem
 
                 // var columnInColumn = moveColumnDictionary[columnIndex];
                 DictionaryPairTest columnInColumn = moveColumnDictionaryForTest.Get(columnIndex);
+
+                //Debug.Log("columnIndex" + columnIndex);
 
                 for (int i = 0; i < columnInColumn.Value.Count; i++)
                 {
@@ -220,6 +241,17 @@ namespace GJG.GridSystem
                         {
                             DropNewItemCheck(column.targetIndexies.Count - column.items.Count, column);
                         }
+                    }
+                }
+            }
+
+            for (int x = 0; x < _gameGrid._grid.GetLength(0); x++)
+            {
+                for (int y = 0; y < _gameGrid._grid.GetLength(1); y++)
+                {
+                    if (_gameGrid.GetNode(new int2(x, y)).IsEmpty)
+                    {
+                        //Debug.Log("BBB BOS INDEX::::" + new int2(x, y));
                     }
                 }
             }
@@ -263,12 +295,19 @@ namespace GJG.GridSystem
         private void FindTargetIndex(MoveColumns moveColumns)
         {
             // butun sutunu geziyoruz
+            //Debug.Log("=========================================================");
+
             foreach (var itemIndex in moveColumns.nodes)
             {
                 // burada item yok
                 if (_gameGrid.GetNode(itemIndex).IsEmpty)
                 {
+                    //Debug.Log("EMPTY ADD::" + itemIndex);
                     moveColumns.targetIndexies.Add(itemIndex);
+                }
+                else
+                {
+                    //Debug.Log("NOT EMPTY::" + itemIndex);
                 }
             }
         }
@@ -324,7 +363,7 @@ namespace GJG.GridSystem
                         {
                             if (moveColumn.targetIndexies.Count <= k)
                             {
-                                Debug.Log("ERROR" + new int3(i, j, k));
+                                //Debug.Log("ERROR" + new int3(i, j, k));
                             }
                             if (0 > k) continue;
 
@@ -345,13 +384,18 @@ namespace GJG.GridSystem
                                     _groupChecker.CheckJustItem(targetIndex);
 
                                     moveColumn.items.RemoveAt(k);
+
+                                    //Debug.Log("REMOVE AT:::" + moveColumn.targetIndexies[k]);
                                     moveColumn.targetIndexies.RemoveAt(k);
+
                                     k--;
                                 }
                             }
                         }
                     }
                 }
+
+                // move listesi bos mu?
             }
         }
     }

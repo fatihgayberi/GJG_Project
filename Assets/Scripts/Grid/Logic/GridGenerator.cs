@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
 using System;
+using System.Collections.Generic;
 
 namespace GJG.GridSystem
 {
@@ -48,6 +49,13 @@ namespace GJG.GridSystem
 
         private void GridGenerate()
         {
+            HashSet<int2> AAA = new();
+
+            for (int i = 0; i < 60; i++)
+            {
+                AAA.Add(new int2(UnityEngine.Random.Range(0, 17), UnityEngine.Random.Range(0, 10)));
+            }
+
             ItemBase item;
             Vector3 itemPos = Vector3.zero;
 
@@ -55,7 +63,8 @@ namespace GJG.GridSystem
             {
                 for (index.y = 0; index.y < _gameGrid.ColumnLength; index.y++)
                 {
-                    item = _gridData.ObstacleIndex.Contains(index) ? GetNewObstacle() : GetNewItem();
+                    // item = _gridData.ObstacleIndex.Contains(index) ? GetNewObstacle() : GetNewItem();
+                    item = AAA.Contains(index) ? GetNewObstacle() : GetNewItem();
 
                     item.gameObject.SetActive(true);
 
