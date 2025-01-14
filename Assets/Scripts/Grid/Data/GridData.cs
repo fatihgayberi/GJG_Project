@@ -10,21 +10,25 @@ namespace GJG.GridSystem
     [CreateAssetMenu(fileName = "GridData", menuName = "GridData", order = 0)]
     public class GridData : ScriptableObject
     {
-        [SerializeField] private List<int2> obstacleIndex;
         [SerializeField] private MatchStrategyType matchStrategyType;
         [SerializeField] private int poolOffset;
+        [SerializeField] private int minGroupCount;
+        [SerializeField] private Vector2 cellSize;
+        [SerializeField] private Vector3 startPos;
         [SerializeField, Tooltip("M - N")] private int2 gridSize; // M N
-        // [SerializeField, Tooltip("K")] private ColorInitData[] colorInitData; // K
         [SerializeField, Tooltip("K")] private GridCategoryColorData[] gridCategoryColorData; // K
         [SerializeField, Tooltip("A - B - C ...")] private GroupData[] groupData; // A - B - C ...
+        [SerializeField] private List<int2> obstacleIndex;
 
         public MatchStrategyType MatchStrategyType => matchStrategyType;
         public int2 GridSize => gridSize;
         public int PoolOffset => poolOffset;
+        public int MinGroupCount => minGroupCount;
         public GroupData[] GroupDatas => groupData;
-        // public ColorInitData[] ColorInitDatas => colorInitData;
         public GridCategoryColorData[] GridCategoryColorDatas => gridCategoryColorData;
         public List<int2> ObstacleIndex => obstacleIndex;
+        public Vector2 CellSize => cellSize;
+        public Vector3 StartPos => startPos;
 
 
         [Serializable]

@@ -10,7 +10,6 @@ namespace GJG.GridSystem
     public class GameGrid
     {
         private GridData _gridData;
-        private GridCoordinatData _gridCoordinatData;
 
         public Node[,] _grid;
 
@@ -19,10 +18,9 @@ namespace GJG.GridSystem
         public int RowLength => _grid.GetLength(0);
         public int ColumnLength => _grid.GetLength(1);
 
-        public GameGrid(GridData gridData, GridCoordinatData gridCoordinatData)
+        public GameGrid(GridData gridData)
         {
             _gridData = gridData;
-            _gridCoordinatData = gridCoordinatData;
 
             _grid = new Node[_gridData.GridSize.x, _gridData.GridSize.y];
         }
@@ -102,8 +100,8 @@ namespace GJG.GridSystem
         {
             int2 index;
 
-            index.x = Mathf.RoundToInt((worldPosition.x - _gridCoordinatData.StartPos.x) / _gridCoordinatData.CellSize.x);
-            index.y = Mathf.RoundToInt((worldPosition.y - _gridCoordinatData.StartPos.y) / _gridCoordinatData.CellSize.y);
+            index.x = Mathf.RoundToInt((worldPosition.x - _gridData.StartPos.x) / _gridData.CellSize.x);
+            index.y = Mathf.RoundToInt((worldPosition.y - _gridData.StartPos.y) / _gridData.CellSize.y);
 
             return index;
         }

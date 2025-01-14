@@ -19,6 +19,7 @@ namespace GJG.BlastSystem
         private GridGenerator _gridGenerator;
 
         private Vector3 _worldPosition;
+        private int _minGroupCount;
 
         public Blast(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker, GridGenerator gridGenerator)
         {
@@ -26,9 +27,10 @@ namespace GJG.BlastSystem
             _gridGenerator = gridGenerator;
 
             _gridDropper = new GridDropper(_gameGrid, groupChecker, gridGenerator);
-            InputEvents.ScreenTouch += OnScreenTouch;
-
             _matchStrategy = new MatchStrategy(_gameGrid, gridData.MatchStrategyType);
+            _minGroupCount = gridData.MinGroupCount;
+
+            InputEvents.ScreenTouch += OnScreenTouch;
         }
 
         private void OnScreenTouch(Vector3 inputPosition)
@@ -47,6 +49,8 @@ namespace GJG.BlastSystem
             if (itemBase is not ISellectableItem) return;
 
             HashSet<int2> matchsItem = _matchStrategy.Strategy.GetMatchesItem(itemIndex);
+
+            if (matchsItem.Count < _minGroupCount) return;
 
             var obstacleBlast = ObstacleBlastCheck(matchsItem);
             matchsItem.UnionWith(obstacleBlast);
@@ -91,12 +95,6 @@ namespace GJG.BlastSystem
             }
 
             return blastObstacleIndex;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_worldPosition, 0.4f);
         }
     }
 }

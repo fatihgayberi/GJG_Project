@@ -12,6 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4352f70969a8f4cb091ee6f739ff5d, type: 3}
   m_Name: GridData
   m_EditorClassIdentifier: 
+  matchStrategyType: 1
+  poolOffset: 30
+  minGroupCount: 2
+  cellSize: {x: 0.9, y: 1}
+  startPos: {x: 0, y: 0, z: 0}
+  gridSize:
+    x: 17
+    y: 10
+  gridCategoryColorData:
+  - itemCategoryType: 1
+    colorInitData:
+    - itemColorType: 1
+      initialPower: 3
+    - itemColorType: 2
+      initialPower: 2
+    - itemColorType: 3
+      initialPower: 1
+    - itemColorType: 4
+      initialPower: 1
+    - itemColorType: 5
+      initialPower: 1
+    - itemColorType: 6
+      initialPower: 2
+  - itemCategoryType: 2
+    colorInitData:
+    - itemColorType: 7
+      initialPower: 1
+  groupData:
+  - itemType: 2
+    maxCount: 4
+  - itemType: 3
+    maxCount: 6
+  - itemType: 4
+    maxCount: 8
   obstacleIndex:
   - x: 0
     y: 2
@@ -43,34 +77,3 @@ MonoBehaviour:
     y: 7
   - x: 6
     y: 5
-  matchStrategyType: 1
-  poolOffset: 30
-  gridSize:
-    x: 17
-    y: 10
-  gridCategoryColorData:
-  - itemCategoryType: 1
-    colorInitData:
-    - itemColorType: 1
-      initialPower: 1
-    - itemColorType: 2
-      initialPower: 0
-    - itemColorType: 3
-      initialPower: 1
-    - itemColorType: 4
-      initialPower: 0
-    - itemColorType: 5
-      initialPower: 0
-    - itemColorType: 6
-      initialPower: 0
-  - itemCategoryType: 2
-    colorInitData:
-    - itemColorType: 7
-      initialPower: 1
-  groupData:
-  - itemType: 2
-    maxCount: 4
-  - itemType: 3
-    maxCount: 6
-  - itemType: 4
-    maxCount: 8

@@ -10,7 +10,6 @@ namespace GJG.GridSystem
     public class GridManager : MonoBehaviour
     {
         [SerializeField] private ItemPainter itemPainter;
-        [SerializeField] private GridCoordinatData gridCoordinatData;
         [SerializeField] private GridData gridData;
         [SerializeField] private Pool<ItemBase> itemPool;
         [SerializeField] private Pool<ItemBase> _obstaclePool;
@@ -26,7 +25,7 @@ namespace GJG.GridSystem
             itemPainter.Initialize();
 
             // grid uretildi
-            _gridGenerator = new GridGenerator(gridCoordinatData, gridData, itemPool, _obstaclePool, itemPainter);
+            _gridGenerator = new GridGenerator( gridData, itemPool, _obstaclePool, itemPainter);
 
             // grid gruplama hazirlandi
             _groupChecker = new GroupChecker(_gridGenerator.Grid, gridData, itemPainter);

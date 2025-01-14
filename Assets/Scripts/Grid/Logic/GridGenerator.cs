@@ -4,14 +4,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
 using System;
-using System.Collections.Generic;
 
 namespace GJG.GridSystem
 {
     [Serializable]
     public class GridGenerator
     {
-        [SerializeField] private GridCoordinatData _gridCoordinatData;
         [SerializeField] private GridData _gridData;
         [SerializeField] private Pool<ItemBase> _itemPool;
         [SerializeField] private Pool<ItemBase> _obstaclePool;
@@ -24,9 +22,8 @@ namespace GJG.GridSystem
         public GameGrid Grid => _gameGrid;
         public ItemPainter ItemPainter => _itemPainter;
 
-        public GridGenerator(GridCoordinatData gridCoordinatData, GridData gridData, Pool<ItemBase> itemPool, Pool<ItemBase> obstaclePool, ItemPainter itemPainter)
+        public GridGenerator(GridData gridData, Pool<ItemBase> itemPool, Pool<ItemBase> obstaclePool, ItemPainter itemPainter)
         {
-            _gridCoordinatData = gridCoordinatData;
             _itemPainter = itemPainter;
             _itemPool = itemPool;
             _obstaclePool = obstaclePool;
@@ -44,7 +41,7 @@ namespace GJG.GridSystem
 
             // grid hazirlandi
             _colorGenerator = new(_gridData);
-            _gameGrid = new GameGrid(_gridData, _gridCoordinatData);
+            _gameGrid = new GameGrid(_gridData);
         }
 
         private void GridGenerate()
@@ -60,12 +57,12 @@ namespace GJG.GridSystem
 
                     item.gameObject.SetActive(true);
 
-                    itemPos.x = _gridCoordinatData.CellSize.x * index.x;
-                    itemPos.y = _gridCoordinatData.CellSize.y * index.y;
+                    itemPos.x = _gridData.CellSize.x * index.x;
+                    itemPos.y = _gridData.CellSize.y * index.y;
 
-                    item.transform.position = itemPos + _gridCoordinatData.StartPos;
+                    item.transform.position = itemPos + _gridData.StartPos;
 
-                    _gameGrid.AddItem(index, item, itemPos + _gridCoordinatData.StartPos);
+                    _gameGrid.AddItem(index, item, itemPos + _gridData.StartPos);
                 }
             }
         }
