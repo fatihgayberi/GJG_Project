@@ -24,82 +24,9 @@ namespace GJG.GridSystem
 
         private int _rowLength, _columnLength;
 
-        // private MoveColumns[] moveColumns;
-
         // column - MoveColumns
 
-        [Serializable]
-        public class DictionaryPairTest
-        {
-            public int Key;
-            public List<MoveColumns> Value;
-        }
-
-        [Serializable]
-        public class DictionaryTest
-        {
-            public List<DictionaryPairTest> pairList = new();
-
-            public int Count => pairList.Count;
-
-            public void Add(int key, List<MoveColumns> Value)
-            {
-                if (Get(key) != null)
-                {
-                    //Debug.LogError("icinde var");
-                    return;
-                }
-
-                DictionaryPairTest dictionaryPairTest = new();
-                dictionaryPairTest.Key = key;
-                dictionaryPairTest.Value = Value;
-                pairList.Add(dictionaryPairTest);
-            }
-
-            public void Remove(int key)
-            {
-                if (Get(key) == null)
-                {
-                    //Debug.LogError("icinde yok");
-                    return;
-                }
-
-                pairList.RemoveAt(key);
-            }
-
-            public void Clear()
-            {
-                pairList.Clear();
-            }
-
-            public DictionaryTest ToCopy()
-            {
-                List<DictionaryPairTest> copyPair = new(pairList);
-                DictionaryTest copyDictionary = new DictionaryTest();
-
-                copyDictionary.pairList = copyPair;
-
-                return copyDictionary;
-            }
-
-            public DictionaryPairTest Get(int i)
-            {
-                foreach (var item in pairList)
-                {
-                    if (item.Key == i)
-                    {
-                        return item;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        public DictionaryTest moveColumnDictionaryForTest = new();
-
-        [SerializeField]
-        // public Dictionary<int, List<MoveColumns>> moveColumnDictionary = new();
+        public Dictionary<int, List<MoveColumns>> moveColumnDictionary = new();
 
         public GridDropper(GameGrid gameGrid, GroupChecker groupChecker, GridGenerator gridGenerator)
         {
@@ -118,20 +45,20 @@ namespace GJG.GridSystem
         private void InitMoveCollumsDictionary()
         {
             //Debug.Log("InitMoveCollumsDictionary");
-            // var tmp = new Dictionary<int, List<MoveColumns>>(moveColumnDictionary);
-            var tmp = moveColumnDictionaryForTest.ToCopy();
+            var tmp = new Dictionary<int, List<MoveColumns>>(moveColumnDictionary);
+            // var tmp = moveColumnDictionary.ToCopy();
 
             // moveColumnDictionary.Clear();
-            moveColumnDictionaryForTest.Clear();
+            moveColumnDictionary.Clear();
 
             for (int i = 0; i < _rowLength; i++)
             {
                 // moveColumnDictionary.Add(i, new());
-                moveColumnDictionaryForTest.Add(i, new());
+                moveColumnDictionary.Add(i, new());
 
                 MoveColumns moveColumn = new();
                 // moveColumnDictionary[i].Add(moveColumn);
-                moveColumnDictionaryForTest.Get(i).Value.Add(moveColumn);
+                moveColumnDictionary[i].Add(moveColumn);
 
                 List<int2> itemIndexies = _gameGrid.GetColumn(i);
 
@@ -144,7 +71,7 @@ namespace GJG.GridSystem
                     {
                         moveColumn = new();
                         // moveColumnDictionary[i].Add(moveColumn);
-                        moveColumnDictionaryForTest.Get(i).Value.Add(moveColumn);
+                        moveColumnDictionary[i].Add(moveColumn);
                     }
                     else
                     {
@@ -154,14 +81,15 @@ namespace GJG.GridSystem
 
                 if (tmp.Count > 0)
                 {
-                    // var oldColums = tmp[i];
-                    DictionaryPairTest oldColums = tmp.Get(i);
-                    // var newColums = moveColumnDictionary[i];
-                    DictionaryPairTest newColums = moveColumnDictionaryForTest.Get(i);
 
-                    foreach (var oldColum in oldColums.Value)
+                    // var oldColums = tmp[i];
+                    List<MoveColumns> oldColums = tmp[i];
+                    // var newColums = moveColumnDictionary[i];
+                    List<MoveColumns> newColums = moveColumnDictionary[i];
+
+                    foreach (var oldColum in oldColums)
                     {
-                        foreach (var newColum in newColums.Value)
+                        foreach (var newColum in newColums)
                         {
                             if (oldColum.nodes.Count is 0) continue;
                             if (newColum.nodes.Contains(oldColum.nodes[0]))
@@ -191,11 +119,11 @@ namespace GJG.GridSystem
                 // sutunda yer alan indexler
 
                 // var columnInColumn = moveColumnDictionary[columnIndex];
-                DictionaryPairTest columnInColumn = moveColumnDictionaryForTest.Get(columnIndex);
+                List<MoveColumns> columnInColumn = moveColumnDictionary[columnIndex];
 
-                for (int i = 0; i < columnInColumn.Value.Count; i++)
+                for (int i = 0; i < columnInColumn.Count; i++)
                 {
-                    var column = columnInColumn.Value[i];
+                    var column = columnInColumn[i];
                     column.targetIndexies.Clear();
 
                     // griddeki itemleri kontrol eder
@@ -204,7 +132,7 @@ namespace GJG.GridSystem
                     // target indexleri bulur
                     FindTargetIndex(column);
 
-                    if (i == columnInColumn.Value.Count - 1)
+                    if (i == columnInColumn.Count - 1)
                     {
                         int blastedInThisColumn = 0;
                         var blatsObjects = blastCount[columnIndex];
@@ -315,18 +243,18 @@ namespace GJG.GridSystem
             Vector3 targetPos;
             int2 targetIndex;
             ItemBase currentItemBase;
-            DictionaryPairTest moveColumnPair;
+            List<MoveColumns> moveColumnPair;
             MoveColumns moveColumn;
 
             // sutunlar listesi
-            for (int i = 0; i < moveColumnDictionaryForTest.pairList.Count; i++)
+            for (int i = 0; i < moveColumnDictionary.Count; i++)
             {
-                moveColumnPair = moveColumnDictionaryForTest.pairList[i];
+                moveColumnPair = moveColumnDictionary[i];
 
                 // sutun icindeki sutunlar listesi
-                for (int j = 0; j < moveColumnPair.Value.Count; j++)
+                for (int j = 0; j < moveColumnPair.Count; j++)
                 {
-                    moveColumn = moveColumnPair.Value[j];
+                    moveColumn = moveColumnPair[j];
 
                     for (int k = 0; k < moveColumn.items.Count; k++)
                     {
@@ -359,17 +287,17 @@ namespace GJG.GridSystem
 
         private void MoveFinishCheck()
         {
-            DictionaryPairTest moveColumnPair;
             int activeItemsCount = 0;
+            List<MoveColumns> moveColumnPair;
 
-            for (int i = 0; i < moveColumnDictionaryForTest.pairList.Count; i++)
+            for (int i = 0; i < moveColumnDictionary.Count; i++)
             {
-                moveColumnPair = moveColumnDictionaryForTest.pairList[i];
+                moveColumnPair = moveColumnDictionary[i];
 
                 // sutun icindeki sutunlar listesi
-                for (int j = 0; j < moveColumnPair.Value.Count; j++)
+                for (int j = 0; j < moveColumnPair.Count; j++)
                 {
-                    activeItemsCount += moveColumnPair.Value[j].items.Count;
+                    activeItemsCount += moveColumnPair[j].items.Count;
                 }
             }
 
