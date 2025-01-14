@@ -4,8 +4,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using GJG.Items;
 using System;
-using System.Reflection;
-using UnityEditor;
 
 namespace GJG.GridSystem
 {
@@ -182,22 +180,6 @@ namespace GJG.GridSystem
 
         public void Drop(HashSet<int> droppedColumns, Dictionary<int, List<int2>> blastCount, bool recreateGrid = false)
         {
-            // var assembly = Assembly.GetAssembly(typeof(SceneView));
-            // var type = assembly.GetType("UnityEditor.LogEntries");
-            // var method = type.GetMethod("Clear");
-            // method.Invoke(new object(), null);
-
-            for (int i = 0; i < _gameGrid._grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < _gameGrid._grid.GetLength(1); j++)
-                {
-                    if (_gameGrid.GetNode(new int2(i, j)).IsEmpty)
-                    {
-                        //Debug.Log("AAA BOS INDEX::::" + new int2(i, j));
-                    }
-                }
-            }
-
             if (recreateGrid)
             {
                 InitMoveCollumsDictionary();
@@ -210,8 +192,6 @@ namespace GJG.GridSystem
 
                 // var columnInColumn = moveColumnDictionary[columnIndex];
                 DictionaryPairTest columnInColumn = moveColumnDictionaryForTest.Get(columnIndex);
-
-                //Debug.Log("columnIndex" + columnIndex);
 
                 for (int i = 0; i < columnInColumn.Value.Count; i++)
                 {
@@ -241,17 +221,6 @@ namespace GJG.GridSystem
                         {
                             DropNewItemCheck(column.targetIndexies.Count - column.items.Count, column);
                         }
-                    }
-                }
-            }
-
-            for (int x = 0; x < _gameGrid._grid.GetLength(0); x++)
-            {
-                for (int y = 0; y < _gameGrid._grid.GetLength(1); y++)
-                {
-                    if (_gameGrid.GetNode(new int2(x, y)).IsEmpty)
-                    {
-                        //Debug.Log("BBB BOS INDEX::::" + new int2(x, y));
                     }
                 }
             }
@@ -295,19 +264,12 @@ namespace GJG.GridSystem
         private void FindTargetIndex(MoveColumns moveColumns)
         {
             // butun sutunu geziyoruz
-            //Debug.Log("=========================================================");
-
             foreach (var itemIndex in moveColumns.nodes)
             {
                 // burada item yok
                 if (_gameGrid.GetNode(itemIndex).IsEmpty)
                 {
-                    //Debug.Log("EMPTY ADD::" + itemIndex);
                     moveColumns.targetIndexies.Add(itemIndex);
-                }
-                else
-                {
-                    //Debug.Log("NOT EMPTY::" + itemIndex);
                 }
             }
         }
@@ -339,63 +301,82 @@ namespace GJG.GridSystem
 
         private async UniTaskVoid Move()
         {
+            while (true)
+            {
+                await UniTask.Yield();
+
+                ItemMover();
+                MoveFinishCheck();
+            }
+        }
+
+        private void ItemMover()
+        {
             Vector3 targetPos;
             int2 targetIndex;
             ItemBase currentItemBase;
             DictionaryPairTest moveColumnPair;
             MoveColumns moveColumn;
 
-            while (true)
+            // sutunlar listesi
+            for (int i = 0; i < moveColumnDictionaryForTest.pairList.Count; i++)
             {
-                await UniTask.Yield();
+                moveColumnPair = moveColumnDictionaryForTest.pairList[i];
 
-                // sutunlar listesi
-                for (int i = 0; i < moveColumnDictionaryForTest.pairList.Count; i++)
+                // sutun icindeki sutunlar listesi
+                for (int j = 0; j < moveColumnPair.Value.Count; j++)
                 {
-                    moveColumnPair = moveColumnDictionaryForTest.pairList[i];
+                    moveColumn = moveColumnPair.Value[j];
 
-                    // sutun icindeki sutunlar listesi
-                    for (int j = 0; j < moveColumnPair.Value.Count; j++)
+                    for (int k = 0; k < moveColumn.items.Count; k++)
                     {
-                        moveColumn = moveColumnPair.Value[j];
+                        targetIndex = moveColumn.targetIndexies[k];
+                        targetPos = _gameGrid.GetNode(targetIndex).nodePos;
+                        currentItemBase = moveColumn.items[k];
 
-                        for (int k = 0; k < moveColumn.items.Count; k++)
+                        currentItemBase.transform.position = Vector3.MoveTowards(currentItemBase.transform.position, targetPos, 5 * Time.deltaTime);
+
+                        if (currentItemBase.transform.position == targetPos)
                         {
-                            if (moveColumn.targetIndexies.Count <= k)
+                            if (currentItemBase is ItemBlast itemBlast)
                             {
-                                //Debug.Log("ERROR" + new int3(i, j, k));
-                            }
-                            if (0 > k) continue;
+                                itemBlast.CanMatch = true;
+                                itemBlast.CanSelect = true;
 
-                            targetIndex = moveColumn.targetIndexies[k];
-                            targetPos = _gameGrid.GetNode(targetIndex).nodePos;
-                            currentItemBase = moveColumn.items[k];
+                                _gameGrid.AddItem(targetIndex, itemBlast, targetPos);
+                                _groupChecker.CheckJustItem(targetIndex);
 
-                            currentItemBase.transform.position = Vector3.MoveTowards(currentItemBase.transform.position, targetPos, 5 * Time.deltaTime);
+                                moveColumn.items.RemoveAt(k);
+                                moveColumn.targetIndexies.RemoveAt(k);
 
-                            if (currentItemBase.transform.position == targetPos)
-                            {
-                                if (currentItemBase is ItemBlast itemBlast)
-                                {
-                                    itemBlast.CanMatch = true;
-                                    itemBlast.CanSelect = true;
-
-                                    _gameGrid.AddItem(targetIndex, itemBlast, targetPos);
-                                    _groupChecker.CheckJustItem(targetIndex);
-
-                                    moveColumn.items.RemoveAt(k);
-
-                                    //Debug.Log("REMOVE AT:::" + moveColumn.targetIndexies[k]);
-                                    moveColumn.targetIndexies.RemoveAt(k);
-
-                                    k--;
-                                }
+                                k--;
                             }
                         }
                     }
                 }
+            }
+        }
 
-                // move listesi bos mu?
+        private void MoveFinishCheck()
+        {
+            DictionaryPairTest moveColumnPair;
+            int activeItemsCount = 0;
+
+            for (int i = 0; i < moveColumnDictionaryForTest.pairList.Count; i++)
+            {
+                moveColumnPair = moveColumnDictionaryForTest.pairList[i];
+
+                // sutun icindeki sutunlar listesi
+                for (int j = 0; j < moveColumnPair.Value.Count; j++)
+                {
+                    activeItemsCount += moveColumnPair.Value[j].items.Count;
+                }
+            }
+
+            if (activeItemsCount < 0)
+            {
+                // hareket eden item kalmadi
+                GridEvents.MoveFinishAlltItem?.Invoke();
             }
         }
     }

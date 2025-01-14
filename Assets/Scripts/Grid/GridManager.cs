@@ -1,6 +1,7 @@
 using GJG.Items.ItemColor;
 using Wonnasmith.Pooling;
 using GJG.BlastSystem;
+using GJG.GJGInput;
 using UnityEngine;
 using GJG.Items;
 
@@ -35,13 +36,20 @@ namespace GJG.GridSystem
 
             // patlatma islemlerine hazirlandi
             _blast = new Blast(_gridGenerator.Grid, gridData, _groupChecker, _gridGenerator);
+
+            GridEvents.MoveFinishAlltItem += OnMoveFinishAlltItem;
         }
 
-        [ContextMenu("RefreshGrid")]
+        private void OnMoveFinishAlltItem()
+        {
+            InputEvents.ScreenTouchLock?.Invoke();
+            RefreshGrid();
+            InputEvents.ScreenTouchUnLock?.Invoke();
+        }
+
+        // [ContextMenu("RefreshGrid")]
         public void RefreshGrid()
         {
-            Debug.Log("RefreshGrid()");
-
             _gridGenerator.RefreshGrid();
             _groupChecker.CheckAllGrid();
         }
