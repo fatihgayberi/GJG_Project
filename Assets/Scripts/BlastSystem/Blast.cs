@@ -15,18 +15,18 @@ namespace GJG.BlastSystem
     {
         private MatchStrategy _matchStrategy;
         private GameGrid _gameGrid;
-        public GridDropper _gridDropper;
         private GridGenerator _gridGenerator;
+        private GridDropper _gridDropper;
 
         private Vector3 _worldPosition;
         private int _minGroupCount;
 
-        public Blast(GameGrid gameGrid, GridData gridData, GroupChecker groupChecker, GridGenerator gridGenerator)
+        public Blast(GameGrid gameGrid, GridData gridData, GridDropper gridDropper, GridGenerator gridGenerator)
         {
             _gameGrid = gameGrid;
             _gridGenerator = gridGenerator;
+            _gridDropper = gridDropper;
 
-            _gridDropper = new GridDropper(_gameGrid, groupChecker, gridGenerator);
             _matchStrategy = new MatchStrategy(_gameGrid, gridData.MatchStrategyType);
             _minGroupCount = gridData.MinGroupCount;
 

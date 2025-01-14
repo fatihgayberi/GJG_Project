@@ -285,7 +285,7 @@ namespace GJG.GridSystem
             }
         }
 
-        private void MoveFinishCheck()
+        public bool MoveFinishCheck()
         {
             int activeItemsCount = 0;
             List<MoveColumns> moveColumnPair;
@@ -306,6 +306,8 @@ namespace GJG.GridSystem
                 // hareket eden item kalmadi
                 GridEvents.MoveFinishAlltItem?.Invoke();
             }
+
+            return activeItemsCount > 0;
         }
     }
 }

@@ -15,9 +15,9 @@ namespace GJG.GridSystem
         [SerializeField] private Pool<ItemBase> _obstaclePool;
 
         private GridGenerator _gridGenerator;
+        public GridDropper _gridDropper;
 
         private GroupChecker _groupChecker;
-        public Blast _blast;
 
         private void Start()
         {
@@ -25,7 +25,7 @@ namespace GJG.GridSystem
             itemPainter.Initialize();
 
             // grid uretildi
-            _gridGenerator = new GridGenerator( gridData, itemPool, _obstaclePool, itemPainter);
+            _gridGenerator = new GridGenerator(gridData, itemPool, _obstaclePool, itemPainter);
 
             // grid gruplama hazirlandi
             _groupChecker = new GroupChecker(_gridGenerator.Grid, gridData, itemPainter);
@@ -33,8 +33,12 @@ namespace GJG.GridSystem
             // grid gruplara bolundu ve boyandi
             _groupChecker.CheckAllGrid();
 
+            // gridden item dusurme islemi
+            _gridDropper = new GridDropper(_gridGenerator.Grid, _groupChecker, _gridGenerator);
+
             // patlatma islemlerine hazirlandi
-            _blast = new Blast(_gridGenerator.Grid, gridData, _groupChecker, _gridGenerator);
+            new Blast(_gridGenerator.Grid, gridData, _gridDropper, _gridGenerator);
+
 
             GridEvents.MoveFinishAlltItem += OnMoveFinishAlltItem;
         }
@@ -47,10 +51,21 @@ namespace GJG.GridSystem
         }
 
         // [ContextMenu("RefreshGrid")]
-        public void RefreshGrid()
+        private void RefreshGrid()
         {
             _gridGenerator.RefreshGrid();
             _groupChecker.CheckAllGrid();
+        }
+
+        public void RefreshGridButtonForTest()
+        {
+            if (_gridDropper.MoveFinishCheck())
+            {
+                Debug.LogWarning("Hareket halinde olan itemler var");
+                return;
+            }
+
+            RefreshGrid();
         }
     }
 }
